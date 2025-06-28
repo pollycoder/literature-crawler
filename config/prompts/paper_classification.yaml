@@ -1,0 +1,74 @@
+name: "论文分类提示词"
+task_type: "paper_classification"
+template: |
+  请对以下学术论文进行多维度分类分析：
+  
+  论文信息：
+  标题：{{ title }}
+  作者：{{ authors }}
+  摘要：{{ abstract }}
+  {% if categories %}ArXiv分类：{{ categories }}{% endif %}
+  
+  请以JSON格式返回分析结果：
+  {
+    "primary_domain": "主要研究领域",
+    "sub_domains": ["子领域1", "子领域2"],
+    "research_type": "theory/application/survey/experimental",
+    "technical_approaches": ["技术方法1", "技术方法2"],
+    "relevance_score": 8.5,
+    "keywords_extracted": ["关键词1", "关键词2"],
+    "application_areas": ["应用领域1", "应用领域2"],
+    "novelty_level": "high/medium/low",
+    "citation_potential": "high/medium/low"
+  }
+
+variables:
+  - title
+  - authors
+  - abstract
+  - categories
+
+model_specific:
+  "openai/gpt-4": |
+    Classify this academic paper across multiple dimensions:
+    
+    Paper: {{ title }}
+    Authors: {{ authors }}
+    Abstract: {{ abstract }}
+    {% if categories %}Categories: {{ categories }}{% endif %}
+    
+    Return JSON analysis with classification details:
+    {
+      "primary_domain": "main research field",
+      "sub_domains": ["subdomain1", "subdomain2"],
+      "research_type": "theory/application/survey/experimental",
+      "technical_approaches": ["method1", "method2"],
+      "relevance_score": 8.5,
+      "keywords_extracted": ["keyword1", "keyword2"],
+      "application_areas": ["area1", "area2"],
+      "novelty_level": "high/medium/low",
+      "citation_potential": "high/medium/low"
+    }
+
+language: "zh"
+version: "1.0"
+description: "对学术论文进行多维度分类和质量评估"
+
+examples:
+  - input:
+      title: "Attention Is All You Need"
+      authors: ["Ashish Vaswani", "Noam Shazeer"]
+      abstract: "The dominant sequence transduction models are based on complex recurrent..."
+      categories: ["cs.CL", "cs.AI"]
+    output: |
+      {
+        "primary_domain": "自然语言处理",
+        "sub_domains": ["序列建模", "注意力机制", "神经网络架构"],
+        "research_type": "theory",
+        "technical_approaches": ["Transformer", "自注意力机制", "位置编码"],
+        "relevance_score": 9.5,
+        "keywords_extracted": ["transformer", "attention", "sequence modeling"],
+        "application_areas": ["机器翻译", "文本生成", "语言理解"],
+        "novelty_level": "high",
+        "citation_potential": "high"
+      }

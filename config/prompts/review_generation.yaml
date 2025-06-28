@@ -1,0 +1,126 @@
+name: "文献综述生成提示词"
+task_type: "review_generation"
+template: |
+  你是一位专业的学术研究员，需要基于提供的文献信息生成高质量的文献综述。
+  
+  研究主题：{{ research_topic }}
+  研究领域：{{ research_domains }}
+  
+  文献信息：
+  {% for paper in papers %}
+  {{ loop.index }}. 《{{ paper.title }}》
+     作者：{{ paper.authors }}
+     摘要：{{ paper.abstract }}
+     研究领域：{{ paper.primary_domain }}
+     技术方法：{{ paper.technical_approaches }}
+     
+  {% endfor %}
+  
+  请生成一篇结构化的文献综述，包含以下部分：
+  
+  # {{ research_topic }}文献综述
+  
+  ## 1. 研究背景与意义
+  - 研究领域的发展背景
+  - 当前研究的重要性和价值
+  
+  ## 2. 主要研究方向
+  {% for domain in research_domains %}
+  ### 2.{{ loop.index }} {{ domain }}
+  - 该领域的核心问题
+  - 主要技术方法
+  - 代表性工作
+  {% endfor %}
+  
+  ## 3. 技术方法对比分析
+  - 不同方法的优劣势
+  - 技术发展趋势
+  - 方法间的关联性
+  
+  ## 4. 关键发现与贡献
+  - 重要的研究成果
+  - 创新点和突破
+  - 实际应用价值
+  
+  ## 5. 存在的问题与挑战
+  - 当前研究的局限性
+  - 待解决的问题
+  - 技术瓶颈
+  
+  ## 6. 未来发展方向
+  - 潜在的研究机会
+  - 技术发展趋势
+  - 跨领域融合可能性
+  
+  ## 7. 结论
+  - 研究现状总结
+  - 对未来发展的展望
+  
+  要求：
+  1. 综述应当客观、全面、深入
+  2. 重点突出各文献的核心贡献
+  3. 分析文献间的联系和区别
+  4. 语言学术规范，逻辑清晰
+  5. 总字数控制在3000-5000字
+
+variables:
+  - research_topic
+  - research_domains
+  - papers
+
+model_specific:
+  "openai/gpt-4": |
+    You are a professional academic researcher. Generate a high-quality literature review based on the provided paper information.
+    
+    Research Topic: {{ research_topic }}
+    Research Domains: {{ research_domains }}
+    
+    Paper Information:
+    {% for paper in papers %}
+    {{ loop.index }}. "{{ paper.title }}"
+       Authors: {{ paper.authors }}
+       Abstract: {{ paper.abstract }}
+       Domain: {{ paper.primary_domain }}
+       Methods: {{ paper.technical_approaches }}
+       
+    {% endfor %}
+    
+    Please generate a structured literature review including:
+    1. Research Background and Significance
+    2. Main Research Directions  
+    3. Technical Method Comparison
+    4. Key Findings and Contributions
+    5. Problems and Challenges
+    6. Future Directions
+    7. Conclusion
+    
+    Requirements: Objective, comprehensive, 3000-5000 words, academic language.
+
+language: "zh"
+version: "1.0"
+description: "基于分析的文献生成结构化综述报告"
+
+examples:
+  - input:
+      research_topic: "深度学习在图像识别中的应用"
+      research_domains: ["卷积神经网络", "注意力机制", "迁移学习"]
+      papers: [
+        {
+          "title": "ResNet: Deep Residual Learning for Image Recognition",
+          "authors": "Kaiming He et al.",
+          "abstract": "We present a residual learning framework...",
+          "primary_domain": "计算机视觉",
+          "technical_approaches": ["残差连接", "深度网络"]
+        }
+      ]
+    output: |
+      # 深度学习在图像识别中的应用文献综述
+      
+      ## 1. 研究背景与意义
+      图像识别作为计算机视觉领域的核心任务...
+      
+      ## 2. 主要研究方向
+      ### 2.1 卷积神经网络
+      卷积神经网络作为图像识别的主要技术...
+      
+      [继续完整的综述内容]

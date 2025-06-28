@@ -1,0 +1,45 @@
+{
+  "papers": [],
+  "classifications": [],
+  "requirement": {
+    "user_input": "小推力轨迹优化",
+    "research_domains": [
+      "航天工程",
+      "控制理论"
+    ],
+    "specific_topics": [
+      "小推力轨迹优化",
+      "最优控制",
+      "轨道转移"
+    ],
+    "keywords": [
+      "low-thrust trajectory optimization",
+      "optimal control",
+      "orbital transfer",
+      "indirect methods",
+      "direct methods",
+      "Pontryagin's maximum principle"
+    ],
+    "time_preference": {
+      "start_year": 2020,
+      "end_year": 2024,
+      "priority": "recent"
+    },
+    "paper_count_estimate": 50,
+    "research_focus": [
+      "theory",
+      "application"
+    ],
+    "search_queries": [
+      "all:\"low-thrust trajectory optimization\" AND all:\"optimal control\"",
+      "all:\"low-thrust\" AND all:\"trajectory optimization\" AND all:\"orbital transfer\"",
+      "all:\"indirect methods\" AND all:\"low-thrust\"",
+      "all:\"direct methods\" AND all:\"low-thrust trajectory\""
+    ]
+  },
+  "summary": {
+    "total_papers": 0,
+    "domains_found": 0,
+    "avg_relevance_score": 0
+  }
+}

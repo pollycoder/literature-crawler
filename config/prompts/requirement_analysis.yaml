@@ -1,0 +1,70 @@
+name: "需求分析提示词"
+task_type: "requirement_analysis"
+template: |
+  你是一个专业的学术文献调研助手。用户将告诉你他们的研究兴趣，请帮助分析并提取关键信息。
+  
+  用户输入：{{ user_input }}
+  
+  请分析用户的文献调研需求，并以JSON格式返回以下信息：
+  {
+    "research_domains": ["主要研究领域1", "主要研究领域2"],
+    "specific_topics": ["具体研究方向1", "具体研究方向2"],
+    "keywords": ["关键词1", "关键词2", "关键词3"],
+    "time_preference": {
+      "start_year": 2020,
+      "end_year": 2024,
+      "priority": "recent"
+    },
+    "paper_count_estimate": 50,
+    "research_focus": ["theory", "application", "survey"],
+    "search_queries": ["查询语句1", "查询语句2"]
+  }
+  
+  分析要点：
+  1. 准确识别核心研究领域
+  2. 提取具体的技术方向和方法
+  3. 生成有效的ArXiv搜索关键词
+  4. 估算合理的论文数量范围
+  5. 判断用户更关注理论还是应用
+
+variables:
+  - user_input
+
+model_specific:
+  "openai/gpt-4": |
+    You are a professional academic literature research assistant. Analyze the user's research requirements and extract key information.
+    
+    User Input: {{ user_input }}
+    
+    Please analyze the user's literature research requirements and return the following information in JSON format:
+    {
+      "research_domains": ["main research field 1", "main research field 2"],
+      "specific_topics": ["specific research direction 1", "specific research direction 2"],
+      "keywords": ["keyword1", "keyword2", "keyword3"],
+      "time_preference": {
+        "start_year": 2020,
+        "end_year": 2024,
+        "priority": "recent"
+      },
+      "paper_count_estimate": 50,
+      "research_focus": ["theory", "application", "survey"],
+      "search_queries": ["query string 1", "query string 2"]
+    }
+
+language: "zh"
+version: "1.0"
+description: "分析用户的文献调研需求，提取关键研究信息"
+
+examples:
+  - input:
+      user_input: "我想了解深度学习在自动驾驶中的应用，特别是感知和决策方面"
+    output: |
+      {
+        "research_domains": ["深度学习", "自动驾驶", "计算机视觉"],
+        "specific_topics": ["感知算法", "决策规划", "目标检测", "路径规划"],
+        "keywords": ["autonomous driving", "deep learning", "perception", "decision making", "object detection"],
+        "time_preference": {"start_year": 2020, "end_year": 2024, "priority": "recent"},
+        "paper_count_estimate": 60,
+        "research_focus": ["application", "experimental"],
+        "search_queries": ["deep learning autonomous driving perception", "neural networks self-driving cars decision"]
+      }

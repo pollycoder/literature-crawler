@@ -1,0 +1,165 @@
+# AI文献爬取助手配置文件
+
+# 提供商配置 - 统一使用第三方代理
+providers:
+  # OpenAI 第三方代理 (主要)
+  openai_proxy:
+    provider_type: "openai"
+    api_key: "${OPENAI_PROXY_API_KEY}"
+    base_url: "${OPENAI_PROXY_BASE_URL}"
+    timeout: 30
+    retry_count: 3
+    requests_per_minute: 60
+    max_concurrent_requests: 5
+  
+  # Claude 第三方代理
+  claude_proxy:
+    provider_type: "claude"
+    api_key: "${CLAUDE_PROXY_API_KEY}"
+    base_url: "${CLAUDE_PROXY_BASE_URL}"
+    timeout: 30
+    retry_count: 3
+    requests_per_minute: 60
+    max_concurrent_requests: 3
+  
+  # Gemini 第三方代理
+  gemini_proxy:
+    provider_type: "gemini"
+    api_key: "${GEMINI_PROXY_API_KEY}"
+    base_url: "${GEMINI_PROXY_BASE_URL}"
+    timeout: 30
+    retry_count: 3
+    requests_per_minute: 60
+    max_concurrent_requests: 5
+  
+  # DeepSeek 第三方代理
+  deepseek_proxy:
+    provider_type: "deepseek"
+    api_key: "${DEEPSEEK_PROXY_API_KEY}"
+    base_url: "${DEEPSEEK_PROXY_BASE_URL}"
+    timeout: 30
+    retry_count: 3
+    requests_per_minute: 60
+    max_concurrent_requests: 5
+
+# 模型配置 - 每个提供商支持的模型
+models:
+  # OpenAI 代理支持的模型
+  openai_proxy:
+    - name: "o3"
+      display_name: "o3 (代理)"
+      default_temperature: 1.0
+      default_max_tokens: 1000
+      cost_per_1k_input: 0.06
+      cost_per_1k_output: 0.24
+      
+    - name: "o4-mini-2025-04-16"
+      display_name: "o4-mini (代理)"
+      default_temperature: 1.0
+      default_max_tokens: 1000
+      cost_per_1k_input: 0.002
+      cost_per_1k_output: 0.008
+  
+  # Claude 代理支持的模型
+  claude_proxy:
+    - name: "claude-sonnet-4-0"
+      display_name: "Claude 4.0 Sonnet (代理)"
+      default_temperature: 0.7
+      default_max_tokens: 4000
+      cost_per_1k_input: 0.005
+      cost_per_1k_output: 0.025
+      
+    - name: "claude-3-7-sonnet-20250219"
+      display_name: "Claude 3.7 Sonnet (代理)"
+      default_temperature: 0.7
+      default_max_tokens: 4000
+      cost_per_1k_input: 0.004
+      cost_per_1k_output: 0.020
+      
+    - name: "claude-opus-4-0"
+      display_name: "Claude 4.0 Opus (代理)"
+      default_temperature: 0.7
+      default_max_tokens: 4000
+      cost_per_1k_input: 0.015
+      cost_per_1k_output: 0.075
+  
+  # Gemini 代理支持的模型
+  gemini_proxy:
+    - name: "gemini-2.5-pro"
+      display_name: "Gemini 2.5 Pro (代理)"
+      default_temperature: 0.7
+      default_max_tokens: 8000
+      cost_per_1k_input: 0.0025
+      cost_per_1k_output: 0.0075
+      
+    - name: "gemini-2.5-flash"
+      display_name: "Gemini 2.5 Flash (代理)"
+      default_temperature: 0.7
+      default_max_tokens: 4000
+      cost_per_1k_input: 0.0003
+      cost_per_1k_output: 0.0012
+  
+  # DeepSeek 代理支持的模型
+  deepseek_proxy:
+    - name: "deepseek-chat"
+      display_name: "DeepSeek Chat (代理)"
+      default_temperature: 0.7
+      default_max_tokens: 4000
+      cost_per_1k_input: 0.0014
+      cost_per_1k_output: 0.0028
+      
+    - name: "deepseek-coder"
+      display_name: "DeepSeek Coder (代理)"
+      default_temperature: 0.7
+      default_max_tokens: 4000
+      cost_per_1k_input: 0.0014
+      cost_per_1k_output: 0.0028
+
+# 任务偏好设置 (格式: provider_name/model_name) - 统一使用代理
+task_preferences:
+  requirement_analysis: 
+    - "gemini_proxy/gemini-2.5-flash" # Gemini 2.5 Flash
+    - "openai_proxy/o3"              # 优先使用代理的o3
+    - "claude_proxy/claude-4-0-sonnet"  # Claude 4.0 Sonnet代理
+    - "deepseek_proxy/deepseek-chat" # DeepSeek便宜高效
+    - "gemini_proxy/gemini-2.5-pro"  # Gemini 2.5 Pro
+    - "openai_proxy/o4-mini"         # 备选便宜模型
+  
+  paper_classification: 
+    - "gemini_proxy/gemini-2.5-flash" # Gemini 2.5 Flash
+    - "openai_proxy/o4-mini"         # 分类任务用较便宜的模型
+    - "deepseek_proxy/deepseek-chat" # DeepSeek性价比高
+    - "claude_proxy/claude-3-7-sonnet"  # Claude 3.7 Sonnet
+    - "openai_proxy/o3"              # 高质量备选
+  
+  review_generation: 
+    - "gemini_proxy/gemini-2.5-flash" # Gemini 2.5 Flash
+    - "openai_proxy/o3"              # 综述需要高质量模型
+    - "claude_proxy/claude-4-0-opus"   # Claude 4.0 Opus最高质量
+    - "claude_proxy/claude-4-0-sonnet" # Claude 4.0 Sonnet
+    - "gemini_proxy/gemini-2.5-pro"  # Gemini 2.5 Pro
+    - "deepseek_proxy/deepseek-chat" # DeepSeek备选
+
+# 爬虫设置
+crawler:
+  max_concurrent_requests: 5
+  request_delay: 1.0  # 秒
+  timeout: 30
+  max_papers_per_query: 100
+  default_time_range:
+    start_year: 2020
+    end_year: 2024
+
+# 输出设置
+output:
+  default_format: "json"
+  review_format: "markdown"
+  max_abstract_length: 500
+  include_pdf_links: true
+
+# 日志设置
+logging:
+  level: "INFO"
+  file: "logs/crawler.log"
+  max_size: "10MB"
+  backup_count: 5
