@@ -106,7 +106,10 @@ class ModelRouter:
                 # 获取提供商类
                 provider_class = self.provider_classes.get(provider_config.provider_type)
                 if not provider_class:
-                    print(f"警告: 未知的提供商类型 {provider_config.provider_type}")
+                    error_msg = f"未知的提供商类型 {provider_config.provider_type}"
+                    print(f"警告: {error_msg}")
+                    # 记录到日志
+                    self._log_provider_error(provider_name, "ConfigException", error_msg)
                     continue
                 
                 # 创建提供商实例
@@ -116,7 +119,10 @@ class ModelRouter:
                 print(f"提供商 {provider_name} 已加载 ({len(provider_config.models)} 个模型)")
                 
             except Exception as e:
-                print(f"警告: 初始化提供商 {provider_name} 失败: {str(e)}")
+                error_msg = f"初始化提供商 {provider_name} 失败: {str(e)}"
+                print(f"警告: {error_msg}")
+                # 记录到日志
+                self._log_provider_error(provider_name, type(e).__name__, error_msg)
     
     def get_available_models(self) -> Dict[str, List[str]]:
         """获取所有可用的模型"""
@@ -178,6 +184,8 @@ class ModelRouter:
                 provider = self.providers[ref.provider_name]
                 if provider.test_connection():
                     return model_ref
+                else:
+                    print(f"模型 {model_ref} 连接测试失败，尝试下一个模型")
                 
             except ValueError:
                 continue
@@ -198,14 +206,16 @@ class ModelRouter:
                       model_ref: Optional[str] = None,
                       task_type: TaskType = TaskType.REQUIREMENT_ANALYSIS,
                       **kwargs) -> str:
-        """生成文本"""
-        # 选择模型
-        if not model_ref:
-            model_ref = self.get_optimal_model(task_type)
-            
-        if not model_ref:
-            raise ModelProviderException("No available models found")
+        """生成文本，支持自动故障转移"""
+        # 如果指定了具体模型，只尝试该模型
+        if model_ref:
+            return await self._generate_single_model(prompt, model_ref, **kwargs)
         
+        # 如果没有指定模型，按偏好列表依次尝试
+        return await self._generate_with_fallback(prompt, task_type, **kwargs)
+    
+    async def _generate_single_model(self, prompt: str, model_ref: str, **kwargs) -> str:
+        """使用单个指定模型生成文本"""
         try:
             ref = ModelReference.parse(model_ref)
         except ValueError as e:
@@ -222,46 +232,166 @@ class ModelRouter:
             raise ModelProviderException(f"Model {ref.model_name} not found")
         
         # 设置默认参数
+        default_max_tokens = model_info.default_max_tokens if model_info else 4000
+        default_temperature = model_info.default_temperature if model_info else 0.7
+        
         generate_kwargs = {
             'model_name': ref.model_name,
-            'temperature': kwargs.get('temperature', model_info.default_temperature),
-            'max_tokens': kwargs.get('max_tokens', model_info.default_max_tokens)
+            'max_tokens': kwargs.get('max_tokens', default_max_tokens)
         }
         
         # o1/o3/o4推理模型不支持temperature
-        if self._is_reasoning_model(ref.model_name) and 'temperature' in generate_kwargs:
-            del generate_kwargs['temperature']
+        if not self._is_reasoning_model(ref.model_name):
+            generate_kwargs['temperature'] = kwargs.get('temperature', default_temperature)
         
+        print(f"使用模型: {model_ref}")
         return await provider.generate_with_retry(prompt, **generate_kwargs)
+    
+    async def _generate_with_fallback(self, prompt: str, task_type: TaskType, **kwargs) -> str:
+        """使用故障转移机制生成文本"""
+        # 获取任务偏好列表
+        task_preferences = self.app_config.task_preferences.get(task_type.value, [])
+        
+        if not task_preferences:
+            # 如果没有配置偏好，使用第一个可用模型
+            for provider_name in self.providers:
+                provider_config = self.app_config.providers[provider_name]
+                if provider_config.models:
+                    first_model = provider_config.models[0]
+                    model_ref = f"{provider_name}/{first_model.name}"
+                    try:
+                        return await self._generate_single_model(prompt, model_ref, **kwargs)
+                    except Exception as e:
+                        print(f"模型 {model_ref} 调用失败: {str(e)}")
+                        continue
+            
+            raise ModelProviderException("No available models found")
+        
+        # 按偏好顺序尝试模型
+        last_error = None
+        for model_ref in task_preferences:
+            try:
+                ref = ModelReference.parse(model_ref)
+                
+                # 检查提供商是否可用
+                if ref.provider_name not in self.providers:
+                    print(f"跳过模型 {model_ref}: 提供商 {ref.provider_name} 不可用")
+                    continue
+                
+                # 检查模型是否存在
+                model_info = self.get_model_info(model_ref)
+                if not model_info:
+                    print(f"跳过模型 {model_ref}: 模型不存在")
+                    continue
+                
+                # 尝试生成
+                print(f"尝试使用模型: {model_ref}")
+                return await self._generate_single_model(prompt, model_ref, **kwargs)
+                
+            except Exception as e:
+                last_error = e
+                print(f"模型 {model_ref} 调用失败: {str(e)}")
+                # 继续尝试下一个模型
+                continue
+        
+        # 如果所有偏好模型都失败了，抛出最后一个错误
+        if last_error:
+            raise ModelProviderException(f"All preferred models failed. Last error: {str(last_error)}")
+        else:
+            raise ModelProviderException("No valid models found in preferences")
     
     async def generate_batch(self,
                            prompts: List[str],
                            model_ref: Optional[str] = None,
                            task_type: TaskType = TaskType.REQUIREMENT_ANALYSIS,
                            **kwargs) -> List[str]:
-        """批量生成文本"""
-        if not model_ref:
-            model_ref = self.get_optimal_model(task_type)
+        """批量生成文本，支持自动故障转移"""
+        # 如果指定了具体模型，只尝试该模型
+        if model_ref:
+            return await self._generate_batch_single_model(prompts, model_ref, **kwargs)
         
-        if not model_ref:
-            raise ModelProviderException("No available models found")
-        
+        # 如果没有指定模型，按偏好列表依次尝试
+        return await self._generate_batch_with_fallback(prompts, task_type, **kwargs)
+    
+    async def _generate_batch_single_model(self, prompts: List[str], model_ref: str, **kwargs) -> List[str]:
+        """使用单个指定模型批量生成文本"""
         ref = ModelReference.parse(model_ref)
         provider = self.providers.get(ref.provider_name)
         if not provider:
             raise ModelProviderException(f"Provider {ref.provider_name} not available")
         
         model_info = self.get_model_info(model_ref)
+        if not model_info:
+            raise ModelProviderException(f"Model {ref.model_name} not found")
+        
+        # 设置默认参数
+        default_max_tokens = model_info.default_max_tokens if model_info else 4000
+        default_temperature = model_info.default_temperature if model_info else 0.7
+        
         generate_kwargs = {
             'model_name': ref.model_name,
-            'temperature': kwargs.get('temperature', model_info.default_temperature),
-            'max_tokens': kwargs.get('max_tokens', model_info.default_max_tokens)
+            'max_tokens': kwargs.get('max_tokens', default_max_tokens)
         }
         
-        if self._is_reasoning_model(ref.model_name) and 'temperature' in generate_kwargs:
-            del generate_kwargs['temperature']
+        # o1/o3/o4推理模型不支持temperature
+        if not self._is_reasoning_model(ref.model_name):
+            generate_kwargs['temperature'] = kwargs.get('temperature', default_temperature)
         
+        print(f"批量使用模型: {model_ref}")
         return await provider.generate_batch(prompts, **generate_kwargs)
+    
+    async def _generate_batch_with_fallback(self, prompts: List[str], task_type: TaskType, **kwargs) -> List[str]:
+        """使用故障转移机制批量生成文本"""
+        # 获取任务偏好列表
+        task_preferences = self.app_config.task_preferences.get(task_type.value, [])
+        
+        if not task_preferences:
+            # 如果没有配置偏好，使用第一个可用模型
+            for provider_name in self.providers:
+                provider_config = self.app_config.providers[provider_name]
+                if provider_config.models:
+                    first_model = provider_config.models[0]
+                    model_ref = f"{provider_name}/{first_model.name}"
+                    try:
+                        return await self._generate_batch_single_model(prompts, model_ref, **kwargs)
+                    except Exception as e:
+                        print(f"批量模型 {model_ref} 调用失败: {str(e)}")
+                        continue
+            
+            raise ModelProviderException("No available models found for batch generation")
+        
+        # 按偏好顺序尝试模型
+        last_error = None
+        for model_ref in task_preferences:
+            try:
+                ref = ModelReference.parse(model_ref)
+                
+                # 检查提供商是否可用
+                if ref.provider_name not in self.providers:
+                    print(f"跳过批量模型 {model_ref}: 提供商 {ref.provider_name} 不可用")
+                    continue
+                
+                # 检查模型是否存在
+                model_info = self.get_model_info(model_ref)
+                if not model_info:
+                    print(f"跳过批量模型 {model_ref}: 模型不存在")
+                    continue
+                
+                # 尝试批量生成
+                print(f"尝试批量使用模型: {model_ref}")
+                return await self._generate_batch_single_model(prompts, model_ref, **kwargs)
+                
+            except Exception as e:
+                last_error = e
+                print(f"批量模型 {model_ref} 调用失败: {str(e)}")
+                # 继续尝试下一个模型
+                continue
+        
+        # 如果所有偏好模型都失败了，抛出最后一个错误
+        if last_error:
+            raise ModelProviderException(f"All preferred models failed for batch generation. Last error: {str(last_error)}")
+        else:
+            raise ModelProviderException("No valid models found in preferences for batch generation")
     
     def get_all_stats(self) -> Dict[str, Dict[str, Any]]:
         """获取所有提供商统计"""
@@ -285,6 +415,30 @@ class ModelRouter:
                     results[model_ref] = False
         
         return results
+    
+    def _log_provider_error(self, provider_name: str, error_type: str, error_message: str):
+        """记录提供商错误到日志"""
+        try:
+            from ..utils.llm_logger import get_llm_logger
+            import time
+            import uuid
+            
+            logger = get_llm_logger()
+            request_id = f"{provider_name}_init_{int(time.time() * 1000)}"
+            session_id = str(uuid.uuid4())
+            
+            logger.log_error(
+                request_id=request_id,
+                provider=provider_name,
+                model="init",
+                error_type=error_type,
+                error_message=error_message,
+                duration=0,
+                session_id=session_id
+            )
+        except Exception:
+            # 避免日志记录失败影响初始化
+            pass
     
     def _is_reasoning_model(self, model_name: str) -> bool:
         """判断是否为推理模型（不支持temperature参数）"""

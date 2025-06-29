@@ -1,45 +1,1851 @@
 {
-  "papers": [],
-  "classifications": [],
+  "papers": [
+    {
+      "title": "Near-optimal control of dynamical systems with neural ordinary   differential equations",
+      "authors": [
+        "Lucas Böttcher",
+        "Thomas Asikis"
+      ],
+      "abstract": "Optimal control problems naturally arise in many scientific applications where one wishes to steer a dynamical system from a certain initial state $\\mathbf{x}_0$ to a desired target state $\\mathbf{x}^*$ in finite time $T$. Recent advances in deep learning and neural network-based optimization have contributed to the development of methods that can help solve control problems involving high-dimensional dynamical systems. In particular, the framework of neural ordinary differential equations (neural ODEs) provides an efficient means to iteratively approximate continuous time control functions associated with analytically intractable and computationally demanding control tasks. Although neural ODE controllers have shown great potential in solving complex control problems, the understanding of the effects of hyperparameters such as network structure and optimizers on learning performance is still very limited. Our work aims at addressing some of these knowledge gaps to conduct efficient hyperparameter optimization. To this end, we first analyze how truncated and non-truncated backpropagation through time affect runtime performance and the ability of neural networks to learn optimal control functions. Using analytical and numerical methods, we then study the role of parameter initializations, optimizers, and neural-network architecture. Finally, we connect our results to the ability of neural ODE controllers to implicitly regularize control energy.",
+      "arxiv_id": "2206.11120",
+      "url": "https://arxiv.org/abs/2206.11120",
+      "pdf_url": "https://arxiv.org/pdf/2206.11120.pdf",
+      "published_date": "2022-06-22T14:11:11Z",
+      "categories": [
+        "cs.LG",
+        "math.DS",
+        "math.OC"
+      ]
+    },
+    {
+      "title": "Neural Ordinary Differential Equation Control of Dynamics on Graphs",
+      "authors": [
+        "Thomas Asikis",
+        "Lucas Böttcher",
+        "Nino Antulov-Fantulin"
+      ],
+      "abstract": "We study the ability of neural networks to calculate feedback control signals that steer trajectories of continuous time non-linear dynamical systems on graphs, which we represent with neural ordinary differential equations (neural ODEs). To do so, we present a neural-ODE control (NODEC) framework and find that it can learn feedback control signals that drive graph dynamical systems into desired target states. While we use loss functions that do not constrain the control energy, our results show, in accordance with related work, that NODEC produces low energy control signals. Finally, we evaluate the performance and versatility of NODEC against well-known feedback controllers and deep reinforcement learning. We use NODEC to generate feedback controls for systems of more than one thousand coupled, non-linear ODEs that represent epidemic processes and coupled oscillators.",
+      "arxiv_id": "2006.09773",
+      "url": "https://arxiv.org/abs/2006.09773",
+      "pdf_url": "https://arxiv.org/pdf/2006.09773.pdf",
+      "published_date": "2020-06-17T10:47:03Z",
+      "categories": [
+        "cs.LG",
+        "cs.SI",
+        "stat.ML"
+      ]
+    },
+    {
+      "title": "Neural ODE Control for Trajectory Approximation of Continuity Equation",
+      "authors": [
+        "Karthik Elamvazhuthi",
+        "Bahman Gharesifard",
+        "Andrea Bertozzi",
+        "Stanley Osher"
+      ],
+      "abstract": "We consider the controllability problem for the continuity equation, corresponding to neural ordinary differential equations (ODEs), which describes how a probability measure is pushedforward by the flow. We show that the controlled continuity equation has very strong controllability properties. Particularly, a given solution of the continuity equation corresponding to a bounded Lipschitz vector field defines a trajectory on the set of probability measures. For this trajectory, we show that there exist piecewise constant training weights for a neural ODE such that the solution of the continuity equation corresponding to the neural ODE is arbitrarily close to it. As a corollary to this result, we establish that the continuity equation of the neural ODE is approximately controllable on the set of compactly supported probability measures that are absolutely continuous with respect to the Lebesgue measure.",
+      "arxiv_id": "2205.09241",
+      "url": "https://arxiv.org/abs/2205.09241",
+      "pdf_url": "https://arxiv.org/pdf/2205.09241.pdf",
+      "published_date": "2022-05-18T22:59:38Z",
+      "categories": [
+        "math.OC",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Neural ODE control for classification, approximation and transport",
+      "authors": [
+        "Domènec Ruiz-Balet",
+        "Enrique Zuazua"
+      ],
+      "abstract": "We analyze Neural Ordinary Differential Equations (NODEs) from a control theoretical perspective to address some of the main properties and paradigms of Deep Learning (DL), in particular, data classification and universal approximation. These objectives are tackled and achieved from the perspective of the simultaneous control of systems of NODEs. For instance, in the context of classification, each item to be classified corresponds to a different initial datum for the control problem of the NODE, to be classified, all of them by the same common control, to the location (a subdomain of the euclidean space) associated to each label. Our proofs are genuinely nonlinear and constructive, allowing us to estimate the complexity of the control strategies we develop. The nonlinear nature of the activation functions governing the dynamics of NODEs under consideration plays a key role in our proofs, since it allows deforming half of the phase space while the other half remains invariant, a property that classical models in mechanics do not fulfill. This very property allows to build elementary controls inducing specific dynamics and transformations whose concatenation, along with properly chosen hyperplanes, allows achieving our goals in finitely many steps. The nonlinearity of the dynamics is assumed to be Lipschitz. Therefore, our results apply also in the particular case of the ReLU activation function. We also present the counterparts in the context of the control of neural transport equations, establishing a link between optimal transport and deep neural networks.",
+      "arxiv_id": "2104.05278",
+      "url": "https://arxiv.org/abs/2104.05278",
+      "pdf_url": "https://arxiv.org/pdf/2104.05278.pdf",
+      "published_date": "2021-04-12T08:19:53Z",
+      "categories": [
+        "math.OC",
+        "34H05, 37N35, 35Q49, 68T07"
+      ]
+    },
+    {
+      "title": "A Soft Robotic System Automatically Learns Precise Agile Motions Without   Model Information",
+      "authors": [
+        "Simon Bachhuber",
+        "Alexander Pawluchin",
+        "Arka Pal",
+        "Ivo Boblan",
+        "Thomas Seel"
+      ],
+      "abstract": "Many application domains, e.g., in medicine and manufacturing, can greatly benefit from pneumatic Soft Robots (SRs). However, the accurate control of SRs has remained a significant challenge to date, mainly due to their nonlinear dynamics and viscoelastic material properties. Conventional control design methods often rely on either complex system modeling or time-intensive manual tuning, both of which require significant amounts of human expertise and thus limit their practicality. In recent works, the data-driven method, Automatic Neural ODE Control (ANODEC) has been successfully used to -- fully automatically and utilizing only input-output data -- design controllers for various nonlinear systems in silico, and without requiring prior model knowledge or extensive manual tuning. In this work, we successfully apply ANODEC to automatically learn to perform agile, non-repetitive reference tracking motion tasks in a real-world SR and within a finite time horizon. To the best of the authors' knowledge, ANODEC achieves, for the first time, performant control of a SR with hysteresis effects from only 30 seconds of input-output data and without any prior model knowledge. We show that for multiple, qualitatively different and even out-of-training-distribution reference signals, a single feedback controller designed by ANODEC outperforms a manually tuned PID baseline consistently. Overall, this contribution not only further strengthens the validity of ANODEC, but it marks an important step towards more practical, easy-to-use SRs that can automatically learn to perform agile motions from minimal experimental interaction time.",
+      "arxiv_id": "2408.03754",
+      "url": "https://arxiv.org/abs/2408.03754",
+      "pdf_url": "https://arxiv.org/pdf/2408.03754.pdf",
+      "published_date": "2024-08-07T13:09:57Z",
+      "categories": [
+        "cs.RO"
+      ]
+    },
+    {
+      "title": "Opt-ODENet: A Neural ODE Framework with Differentiable QP Layers for   Safe and Stable Control Design (longer version)",
+      "authors": [
+        "Keyan Miao",
+        "Liqun Zhao",
+        "Han Wang",
+        "Konstantinos Gatsis",
+        "Antonis Papachristodoulou"
+      ],
+      "abstract": "Designing controllers that achieve task objectives while ensuring safety is a key challenge in control systems. This work introduces Opt-ODENet, a Neural ODE framework with a differentiable Quadratic Programming (QP) optimization layer to enforce constraints as hard requirements. Eliminating the reliance on nominal controllers or large datasets, our framework solves the optimal control problem directly using Neural ODEs. Stability and convergence are ensured through Control Lyapunov Functions (CLFs) in the loss function, while Control Barrier Functions (CBFs) embedded in the QP layer enforce real-time safety. By integrating the differentiable QP layer with Neural ODEs, we demonstrate compatibility with the adjoint method for gradient computation, enabling the learning of the CBF class-$\\mathcal{K}$ function and control network parameters. Experiments validate its effectiveness in balancing safety and performance.",
+      "arxiv_id": "2504.17139",
+      "url": "https://arxiv.org/abs/2504.17139",
+      "pdf_url": "https://arxiv.org/pdf/2504.17139.pdf",
+      "published_date": "2025-04-23T23:09:37Z",
+      "categories": [
+        "eess.SY",
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "Learning Robust State Observers using Neural ODEs (longer version)",
+      "authors": [
+        "Keyan Miao",
+        "Konstantinos Gatsis"
+      ],
+      "abstract": "Relying on recent research results on Neural ODEs, this paper presents a methodology for the design of state observers for nonlinear systems based on Neural ODEs, learning Luenberger-like observers and their nonlinear extension (Kazantzis-Kravaris-Luenberger (KKL) observers) for systems with partially-known nonlinear dynamics and fully unknown nonlinear dynamics, respectively. In particular, for tuneable KKL observers, the relationship between the design of the observer and its trade-off between convergence speed and robustness is analysed and used as a basis for improving the robustness of the learning-based observer in training. We illustrate the advantages of this approach in numerical simulations.",
+      "arxiv_id": "2212.00866",
+      "url": "https://arxiv.org/abs/2212.00866",
+      "pdf_url": "https://arxiv.org/pdf/2212.00866.pdf",
+      "published_date": "2022-12-01T20:58:39Z",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "Nonlinear System Identification of Swarm of UAVs Using Deep Learning   Methods",
+      "authors": [
+        "Saman Yazdannik",
+        "Morteza Tayefi",
+        "Mojtaba Farrokh"
+      ],
+      "abstract": "This study designs and evaluates multiple nonlinear system identification techniques for modeling the UAV swarm system in planar space. learning methods such as RNNs, CNNs, and Neural ODE are explored and compared. The objective is to forecast future swarm trajectories by accurately approximating the nonlinear dynamics of the swarm model. The modeling process is performed using both transient and steady-state data from swarm simulations. Results show that the combination of Neural ODE with a well-trained model using transient data is robust for varying initial conditions and outperforms other learning methods in accurately predicting swarm stability.",
+      "arxiv_id": "2311.12906",
+      "url": "https://arxiv.org/abs/2311.12906",
+      "pdf_url": "https://arxiv.org/pdf/2311.12906.pdf",
+      "published_date": "2023-11-21T13:13:12Z",
+      "categories": [
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "On Dissipativity of Cross-Entropy Loss in Training ResNets",
+      "authors": [
+        "Jens Püttschneider",
+        "Timm Faulwasser"
+      ],
+      "abstract": "The training of ResNets and neural ODEs can be formulated and analyzed from the perspective of optimal control. This paper proposes a dissipative formulation of the training of ResNets and neural ODEs for classification problems by including a variant of the cross-entropy as a regularization in the stage cost. Based on the dissipative formulation of the training, we prove that the trained ResNet exhibit the turnpike phenomenon. We then illustrate that the training exhibits the turnpike phenomenon by training on the two spirals and MNIST datasets. This can be used to find very shallow networks suitable for a given classification task.",
+      "arxiv_id": "2405.19013",
+      "url": "https://arxiv.org/abs/2405.19013",
+      "pdf_url": "https://arxiv.org/pdf/2405.19013.pdf",
+      "published_date": "2024-05-29T11:52:53Z",
+      "categories": [
+        "cs.LG",
+        "cs.SY",
+        "eess.SY",
+        "math.OC"
+      ]
+    },
+    {
+      "title": "Learning on Manifolds: Universal Approximations Properties using   Geometric Controllability Conditions for Neural ODEs",
+      "authors": [
+        "Karthik Elamvazhuthi",
+        "Xuechen Zhang",
+        "Samet Oymak",
+        "Fabio Pasqualetti"
+      ],
+      "abstract": "In numerous robotics and mechanical engineering applications, among others, data is often constrained on smooth manifolds due to the presence of rotational degrees of freedom. Common datadriven and learning-based methods such as neural ordinary differential equations (ODEs), however, typically fail to satisfy these manifold constraints and perform poorly for these applications. To address this shortcoming, in this paper we study a class of neural ordinary differential equations that, by design, leave a given manifold invariant, and characterize their properties by leveraging the controllability properties of control affine systems. In particular, using a result due to Agrachev and Caponigro on approximating diffeomorphisms with flows of feedback control systems, we show that any map that can be represented as the flow of a manifold-constrained dynamical system can also be approximated using the flow of manifold-constrained neural ODE, whenever a certain controllability condition is satisfied. Additionally, we show that this universal approximation property holds when the neural ODE has limited width in each layer, thus leveraging the depth of network instead for approximation. We verify our theoretical findings using numerical experiments on PyTorch for the manifolds S2 and the 3-dimensional orthogonal group SO(3), which are model manifolds for mechanical systems such as spacecrafts and satellites. We also compare the performance of the manifold invariant neural ODE with classical neural ODEs that ignore the manifold invariant properties and show the superiority of our approach in terms of accuracy and sample complexity.",
+      "arxiv_id": "2305.08849",
+      "url": "https://arxiv.org/abs/2305.08849",
+      "pdf_url": "https://arxiv.org/pdf/2305.08849.pdf",
+      "published_date": "2023-05-15T17:59:02Z",
+      "categories": [
+        "math.OC",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Neural ODEs as Feedback Policies for Nonlinear Optimal Control",
+      "authors": [
+        "Ilya Orson Sandoval",
+        "Panagiotis Petsagkourakis",
+        "Ehecatl Antonio del Rio-Chanona"
+      ],
+      "abstract": "Neural ordinary differential equations (Neural ODEs) define continuous time dynamical systems with neural networks. The interest in their application for modelling has sparked recently, spanning hybrid system identification problems and time series analysis. In this work we propose the use of a neural control policy capable of satisfying state and control constraints to solve nonlinear optimal control problems. The control policy optimization is posed as a Neural ODE problem to efficiently exploit the availability of a dynamical system model. We showcase the efficacy of this type of deterministic neural policies in two constrained systems: the controlled Van der Pol system and a bioreactor control problem. This approach represents a practical approximation to the intractable closed-loop solution of nonlinear control problems.",
+      "arxiv_id": "2210.11245",
+      "url": "https://arxiv.org/abs/2210.11245",
+      "pdf_url": "https://arxiv.org/pdf/2210.11245.pdf",
+      "published_date": "2022-10-20T13:19:26Z",
+      "categories": [
+        "math.OC",
+        "cs.AI",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "A minimax optimal control approach for robust neural ODEs",
+      "authors": [
+        "Cristina Cipriani",
+        "Alessandro Scagliotti",
+        "Tobias Wöhrer"
+      ],
+      "abstract": "In this paper, we address the adversarial training of neural ODEs from a robust control perspective. This is an alternative to the classical training via empirical risk minimization, and it is widely used to enforce reliable outcomes for input perturbations. Neural ODEs allow the interpretation of deep neural networks as discretizations of control systems, unlocking powerful tools from control theory for the development and the understanding of machine learning. In this specific case, we formulate the adversarial training with perturbed data as a minimax optimal control problem, for which we derive first order optimality conditions in the form of Pontryagin's Maximum Principle. We provide a novel interpretation of robust training leading to an alternative weighted technique, which we test on a low-dimensional classification task.",
+      "arxiv_id": "2310.17584",
+      "url": "https://arxiv.org/abs/2310.17584",
+      "pdf_url": "https://arxiv.org/pdf/2310.17584.pdf",
+      "published_date": "2023-10-26T17:07:43Z",
+      "categories": [
+        "math.OC",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Feasibility Study of Neural ODE and DAE Modules for Power System Dynamic   Component Modeling",
+      "authors": [
+        "Tannan Xiao",
+        "Ying Chen",
+        "Shaowei Huang",
+        "Tirui He",
+        "Huizhe Guan"
+      ],
+      "abstract": "In the context of high penetration of renewables, the need to build dynamic models of power system components based on accessible measurement data has become urgent. To address this challenge, firstly, a neural ordinary differential equations (ODE) module and a neural differential-algebraic equations (DAE) module are proposed to form a data-driven modeling framework that accurately captures components' dynamic characteristics and flexibly adapts to various interface settings. Secondly, analytical models and data-driven models learned by the neural ODE and DAE modules are integrated together and simulated simultaneously using unified transient stability simulation methods. Finally, the neural ODE and DAE modules are implemented with Python and made public on GitHub. Using the portal measurements, three simple but representative cases of excitation controller modeling, photovoltaic power plant modeling, and equivalent load modeling of a regional power network are carried out in the IEEE-39 system and 2383wp system. Neural dynamic model-integrated simulations are compared with the original model-based ones to verify the feasibility and potentiality of the proposed neural ODE and DAE modules.",
+      "arxiv_id": "2110.12981",
+      "url": "https://arxiv.org/abs/2110.12981",
+      "pdf_url": "https://arxiv.org/pdf/2110.12981.pdf",
+      "published_date": "2021-10-25T14:15:45Z",
+      "categories": [
+        "eess.SY",
+        "cs.AI",
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "On the Trade-off Between Efficiency and Precision of Neural Abstraction",
+      "authors": [
+        "Alec Edwards",
+        "Mirco Giacobbe",
+        "Alessandro Abate"
+      ],
+      "abstract": "Neural abstractions have been recently introduced as formal approximations of complex, nonlinear dynamical models. They comprise a neural ODE and a certified upper bound on the error between the abstract neural network and the concrete dynamical model. So far neural abstractions have exclusively been obtained as neural networks consisting entirely of $ReLU$ activation functions, resulting in neural ODE models that have piecewise affine dynamics, and which can be equivalently interpreted as linear hybrid automata. In this work, we observe that the utility of an abstraction depends on its use: some scenarios might require coarse abstractions that are easier to analyse, whereas others might require more complex, refined abstractions. We therefore consider neural abstractions of alternative shapes, namely either piecewise constant or nonlinear non-polynomial (specifically, obtained via sigmoidal activations). We employ formal inductive synthesis procedures to generate neural abstractions that result in dynamical models with these semantics. Empirically, we demonstrate the trade-off that these different neural abstraction templates have vis-a-vis their precision and synthesis time, as well as the time required for their safety verification (done via reachability computation). We improve existing synthesis techniques to enable abstraction of higher-dimensional models, and additionally discuss the abstraction of complex neural ODEs to improve the efficiency of reachability analysis for these models.",
+      "arxiv_id": "2307.15546",
+      "url": "https://arxiv.org/abs/2307.15546",
+      "pdf_url": "https://arxiv.org/pdf/2307.15546.pdf",
+      "published_date": "2023-07-28T13:22:32Z",
+      "categories": [
+        "cs.LO",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Learning Stable Deep Dynamics Models for Partially Observed or Delayed   Dynamical Systems",
+      "authors": [
+        "Andreas Schlaginhaufen",
+        "Philippe Wenk",
+        "Andreas Krause",
+        "Florian Dörfler"
+      ],
+      "abstract": "Learning how complex dynamical systems evolve over time is a key challenge in system identification. For safety critical systems, it is often crucial that the learned model is guaranteed to converge to some equilibrium point. To this end, neural ODEs regularized with neural Lyapunov functions are a promising approach when states are fully observed. For practical applications however, partial observations are the norm. As we will demonstrate, initialization of unobserved augmented states can become a key problem for neural ODEs. To alleviate this issue, we propose to augment the system's state with its history. Inspired by state augmentation in discrete-time systems, we thus obtain neural delay differential equations. Based on classical time delay stability analysis, we then show how to ensure stability of the learned models, and theoretically analyze our approach. Our experiments demonstrate its applicability to stable system identification of partially observed systems and learning a stabilizing feedback policy in delayed feedback control.",
+      "arxiv_id": "2110.14296",
+      "url": "https://arxiv.org/abs/2110.14296",
+      "pdf_url": "https://arxiv.org/pdf/2110.14296.pdf",
+      "published_date": "2021-10-27T09:21:59Z",
+      "categories": [
+        "cs.LG",
+        "cs.SY",
+        "eess.SY",
+        "math.DS",
+        "stat.ML"
+      ]
+    },
+    {
+      "title": "Unconstrained Parametrization of Dissipative and Contracting Neural   Ordinary Differential Equations",
+      "authors": [
+        "Daniele Martinelli",
+        "Clara Lucía Galimberti",
+        "Ian R. Manchester",
+        "Luca Furieri",
+        "Giancarlo Ferrari-Trecate"
+      ],
+      "abstract": "In this work, we introduce and study a class of Deep Neural Networks (DNNs) in continuous-time. The proposed architecture stems from the combination of Neural Ordinary Differential Equations (Neural ODEs) with the model structure of recently introduced Recurrent Equilibrium Networks (RENs). We show how to endow our proposed NodeRENs with contractivity and dissipativity -- crucial properties for robust learning and control. Most importantly, as for RENs, we derive parametrizations of contractive and dissipative NodeRENs which are unconstrained, hence enabling their learning for a large number of parameters. We validate the properties of NodeRENs, including the possibility of handling irregularly sampled data, in a case study in nonlinear system identification.",
+      "arxiv_id": "2304.02976",
+      "url": "https://arxiv.org/abs/2304.02976",
+      "pdf_url": "https://arxiv.org/pdf/2304.02976.pdf",
+      "published_date": "2023-04-06T10:02:54Z",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "No Need for Interactions: Robust Model-Based Imitation Learning using   Neural ODE",
+      "authors": [
+        "HaoChih Lin",
+        "Baopu Li",
+        "Xin Zhou",
+        "Jiankun Wang",
+        "Max Q. -H. Meng"
+      ],
+      "abstract": "Interactions with either environments or expert policies during training are needed for most of the current imitation learning (IL) algorithms. For IL problems with no interactions, a typical approach is Behavior Cloning (BC). However, BC-like methods tend to be affected by distribution shift. To mitigate this problem, we come up with a Robust Model-Based Imitation Learning (RMBIL) framework that casts imitation learning as an end-to-end differentiable nonlinear closed-loop tracking problem. RMBIL applies Neural ODE to learn a precise multi-step dynamics and a robust tracking controller via Nonlinear Dynamics Inversion (NDI) algorithm. Then, the learned NDI controller will be combined with a trajectory generator, a conditional VAE, to imitate an expert's behavior. Theoretical derivation shows that the controller network can approximate an NDI when minimizing the training loss of Neural ODE. Experiments on Mujoco tasks also demonstrate that RMBIL is competitive to the state-of-the-art generative adversarial method (GAIL) and achieves at least 30% performance gain over BC in uneven surfaces.",
+      "arxiv_id": "2104.01390",
+      "url": "https://arxiv.org/abs/2104.01390",
+      "pdf_url": "https://arxiv.org/pdf/2104.01390.pdf",
+      "published_date": "2021-04-03T12:52:22Z",
+      "categories": [
+        "cs.RO",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Neural Abstractions",
+      "authors": [
+        "Alessandro Abate",
+        "Alec Edwards",
+        "Mirco Giacobbe"
+      ],
+      "abstract": "We present a novel method for the safety verification of nonlinear dynamical models that uses neural networks to represent abstractions of their dynamics. Neural networks have extensively been used before as approximators; in this work, we make a step further and use them for the first time as abstractions. For a given dynamical model, our method synthesises a neural network that overapproximates its dynamics by ensuring an arbitrarily tight, formally certified bound on the approximation error. For this purpose, we employ a counterexample-guided inductive synthesis procedure. We show that this produces a neural ODE with non-deterministic disturbances that constitutes a formal abstraction of the concrete model under analysis. This guarantees a fundamental property: if the abstract model is safe, i.e., free from any initialised trajectory that reaches an undesirable state, then the concrete model is also safe. By using neural ODEs with ReLU activation functions as abstractions, we cast the safety verification problem for nonlinear dynamical models into that of hybrid automata with affine dynamics, which we verify using SpaceEx. We demonstrate that our approach performs comparably to the mature tool Flow* on existing benchmark nonlinear models. We additionally demonstrate and that it is effective on models that do not exhibit local Lipschitz continuity, which are out of reach to the existing technologies.",
+      "arxiv_id": "2301.11683",
+      "url": "https://arxiv.org/abs/2301.11683",
+      "pdf_url": "https://arxiv.org/pdf/2301.11683.pdf",
+      "published_date": "2023-01-27T12:38:09Z",
+      "categories": [
+        "cs.LO",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Second-Order Neural ODE Optimizer",
+      "authors": [
+        "Guan-Horng Liu",
+        "Tianrong Chen",
+        "Evangelos A. Theodorou"
+      ],
+      "abstract": "We propose a novel second-order optimization framework for training the emerging deep continuous-time models, specifically the Neural Ordinary Differential Equations (Neural ODEs). Since their training already involves expensive gradient computation by solving a backward ODE, deriving efficient second-order methods becomes highly nontrivial. Nevertheless, inspired by the recent Optimal Control (OC) interpretation of training deep networks, we show that a specific continuous-time OC methodology, called Differential Programming, can be adopted to derive backward ODEs for higher-order derivatives at the same O(1) memory cost. We further explore a low-rank representation of the second-order derivatives and show that it leads to efficient preconditioned updates with the aid of Kronecker-based factorization. The resulting method -- named SNOpt -- converges much faster than first-order baselines in wall-clock time, and the improvement remains consistent across various applications, e.g. image classification, generative flow, and time-series prediction. Our framework also enables direct architecture optimization, such as the integration time of Neural ODEs, with second-order feedback policies, strengthening the OC perspective as a principled tool of analyzing optimization in deep learning. Our code is available at https://github.com/ghliu/snopt.",
+      "arxiv_id": "2109.14158",
+      "url": "https://arxiv.org/abs/2109.14158",
+      "pdf_url": "https://arxiv.org/pdf/2109.14158.pdf",
+      "published_date": "2021-09-29T02:58:18Z",
+      "categories": [
+        "cs.LG",
+        "cs.SY",
+        "eess.SY",
+        "math.OC"
+      ]
+    },
+    {
+      "title": "ControlSynth Neural ODEs: Modeling Dynamical Systems with Guaranteed   Convergence",
+      "authors": [
+        "Wenjie Mei",
+        "Dongzhe Zheng",
+        "Shihua Li"
+      ],
+      "abstract": "Neural ODEs (NODEs) are continuous-time neural networks (NNs) that can process data without the limitation of time intervals. They have advantages in learning and understanding the evolution of complex real dynamics. Many previous works have focused on NODEs in concise forms, while numerous physical systems taking straightforward forms, in fact, belong to their more complex quasi-classes, thus appealing to a class of general NODEs with high scalability and flexibility to model those systems. This, however, may result in intricate nonlinear properties. In this paper, we introduce ControlSynth Neural ODEs (CSODEs). We show that despite their highly nonlinear nature, convergence can be guaranteed via tractable linear inequalities. In the composition of CSODEs, we introduce an extra control term for learning the potential simultaneous capture of dynamics at different scales, which could be particularly useful for partial differential equation-formulated systems. Finally, we compare several representative NNs with CSODEs on important physical dynamics under the inductive biases of CSODEs, and illustrate that CSODEs have better learning and predictive abilities in these settings.",
+      "arxiv_id": "2411.02292",
+      "url": "https://arxiv.org/abs/2411.02292",
+      "pdf_url": "https://arxiv.org/pdf/2411.02292.pdf",
+      "published_date": "2024-11-04T17:20:42Z",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Performance Evaluation of Single-step Explicit Exponential Integration   Methods on Stiff Ordinary Differential Equations",
+      "authors": [
+        "Colby Fronk",
+        "Linda Petzold"
+      ],
+      "abstract": "Stiff systems of ordinary differential equations (ODEs) arise in a wide range of scientific and engineering disciplines and are traditionally solved using implicit integration methods due to their stability and efficiency. However, these methods are computationally expensive, particularly for applications requiring repeated integration, such as parameter estimation, Bayesian inference, neural ODEs, physics-informed neural networks, and MeshGraphNets. Explicit exponential integration methods have been proposed as a potential alternative, leveraging the matrix exponential to address stiffness without requiring nonlinear solvers. This study evaluates several state-of-the-art explicit single-step exponential schemes against classical implicit methods on benchmark stiff ODE problems, analyzing their accuracy, stability, and scalability with step size. Despite their initial appeal, our results reveal that explicit exponential methods significantly lag behind implicit schemes in accuracy and scalability for stiff ODEs. The backward Euler method consistently outperformed higher-order exponential methods in accuracy at small step sizes, with none surpassing the accuracy of the first-order integrating factor Euler method. Exponential methods fail to improve upon first-order accuracy, revealing the integrating factor Euler method as the only reliable choice for repeated, inexpensive integration in applications such as neural ODEs and parameter estimation. This study exposes the limitations of explicit exponential methods and calls for the development of improved algorithms.",
+      "arxiv_id": "2411.19374",
+      "url": "https://arxiv.org/abs/2411.19374",
+      "pdf_url": "https://arxiv.org/pdf/2411.19374.pdf",
+      "published_date": "2024-11-28T20:53:05Z",
+      "categories": [
+        "math.NA",
+        "cs.NA",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Quantitative Flow Approximation Properties of Narrow Neural ODEs",
+      "authors": [
+        "Karthik Elamvazhuthi"
+      ],
+      "abstract": "In this note, we revisit the problem of flow approximation properties of neural ordinary differential equations (NODEs). The approximation properties have been considered as a flow controllability problem in recent literature. The neural ODE is considered {\\it narrow} when the parameters have dimension equal to the input of the neural network, and hence have limited width. We derive the relation of narrow NODEs in approximating flows of shallow but wide NODEs. Due to existing results on approximation properties of shallow neural networks, this facilitates understanding which kind of flows of dynamical systems can be approximated using narrow neural ODEs. While approximation properties of narrow NODEs have been established in literature, the proofs often involve extensive constructions or require invoking deep controllability theorems from control theory. In this paper, we provide a simpler proof technique that involves only ideas from ODEs and Gr{\\\"o}nwall's lemma. Moreover, we provide an estimate on the number of switches needed for the time dependent weights of the narrow NODE to mimic the behavior of a NODE with a single layer wide neural network as the velocity field.",
+      "arxiv_id": "2503.04068",
+      "url": "https://arxiv.org/abs/2503.04068",
+      "pdf_url": "https://arxiv.org/pdf/2503.04068.pdf",
+      "published_date": "2025-03-06T03:54:42Z",
+      "categories": [
+        "math.OC",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Gradient-free training of neural ODEs for system identification and   control using ensemble Kalman inversion",
+      "authors": [
+        "Lucas Böttcher"
+      ],
+      "abstract": "Ensemble Kalman inversion (EKI) is a sequential Monte Carlo method used to solve inverse problems within a Bayesian framework. Unlike backpropagation, EKI is a gradient-free optimization method that only necessitates the evaluation of artificial neural networks in forward passes. In this study, we examine the effectiveness of EKI in training neural ordinary differential equations (neural ODEs) for system identification and control tasks. To apply EKI to optimal control problems, we formulate inverse problems that incorporate a Tikhonov-type regularization term. Our numerical results demonstrate that EKI is an efficient method for training neural ODEs in system identification and optimal control problems, with runtime and quality of solutions that are competitive with commonly used gradient-based optimizers.",
+      "arxiv_id": "2307.07882",
+      "url": "https://arxiv.org/abs/2307.07882",
+      "pdf_url": "https://arxiv.org/pdf/2307.07882.pdf",
+      "published_date": "2023-07-15T20:45:50Z",
+      "categories": [
+        "cs.LG",
+        "cs.NA",
+        "cs.SY",
+        "eess.SY",
+        "math.NA",
+        "physics.comp-ph"
+      ]
+    },
+    {
+      "title": "On The Verification of Neural ODEs with Stochastic Guarantees",
+      "authors": [
+        "Sophie Gruenbacher",
+        "Ramin Hasani",
+        "Mathias Lechner",
+        "Jacek Cyranka",
+        "Scott A. Smolka",
+        "Radu Grosu"
+      ],
+      "abstract": "We show that Neural ODEs, an emerging class of time-continuous neural networks, can be verified by solving a set of global-optimization problems. For this purpose, we introduce Stochastic Lagrangian Reachability (SLR), an abstraction-based technique for constructing a tight Reachtube (an over-approximation of the set of reachable states over a given time-horizon), and provide stochastic guarantees in the form of confidence intervals for the Reachtube bounds. SLR inherently avoids the infamous wrapping effect (accumulation of over-approximation errors) by performing local optimization steps to expand safe regions instead of repeatedly forward-propagating them as is done by deterministic reachability methods. To enable fast local optimizations, we introduce a novel forward-mode adjoint sensitivity method to compute gradients without the need for backpropagation. Finally, we establish asymptotic and non-asymptotic convergence rates for SLR.",
+      "arxiv_id": "2012.08863",
+      "url": "https://arxiv.org/abs/2012.08863",
+      "pdf_url": "https://arxiv.org/pdf/2012.08863.pdf",
+      "published_date": "2020-12-16T11:04:34Z",
+      "categories": [
+        "cs.LG",
+        "cs.NE",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Constrained Neural Ordinary Differential Equations with Stability   Guarantees",
+      "authors": [
+        "Aaron Tuor",
+        "Jan Drgona",
+        "Draguna Vrabie"
+      ],
+      "abstract": "Differential equations are frequently used in engineering domains, such as modeling and control of industrial systems, where safety and performance guarantees are of paramount importance. Traditional physics-based modeling approaches require domain expertise and are often difficult to tune or adapt to new systems. In this paper, we show how to model discrete ordinary differential equations (ODE) with algebraic nonlinearities as deep neural networks with varying degrees of prior knowledge. We derive the stability guarantees of the network layers based on the implicit constraints imposed on the weight's eigenvalues. Moreover, we show how to use barrier methods to generically handle additional inequality constraints. We demonstrate the prediction accuracy of learned neural ODEs evaluated on open-loop simulations compared to ground truth dynamics with bi-linear terms.",
+      "arxiv_id": "2004.10883",
+      "url": "https://arxiv.org/abs/2004.10883",
+      "pdf_url": "https://arxiv.org/pdf/2004.10883.pdf",
+      "published_date": "2020-04-22T22:07:57Z",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "cs.NE",
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "Learning Dynamics under Environmental Constraints via   Measurement-Induced Bundle Structures",
+      "authors": [
+        "Dongzhe Zheng",
+        "Wenjie Mei"
+      ],
+      "abstract": "Learning unknown dynamics under environmental (or external) constraints is fundamental to many fields (e.g., modern robotics), particularly challenging when constraint information is only locally available and uncertain. Existing approaches requiring global constraints or using probabilistic filtering fail to fully exploit the geometric structure inherent in local measurements (by using, e.g., sensors) and constraints. This paper presents a geometric framework unifying measurements, constraints, and dynamics learning through a fiber bundle structure over the state space. This naturally induced geometric structure enables measurement-aware Control Barrier Functions that adapt to local sensing (or measurement) conditions. By integrating Neural ODEs, our framework learns continuous-time dynamics while preserving geometric constraints, with theoretical guarantees of learning convergence and constraint satisfaction dependent on sensing quality. The geometric framework not only enables efficient dynamics learning but also suggests promising directions for integration with reinforcement learning approaches. Extensive simulations demonstrate significant improvements in both learning efficiency and constraint satisfaction over traditional methods, especially under limited and uncertain sensing conditions.",
+      "arxiv_id": "2505.19521",
+      "url": "https://arxiv.org/abs/2505.19521",
+      "pdf_url": "https://arxiv.org/pdf/2505.19521.pdf",
+      "published_date": "2025-05-26T05:07:57Z",
+      "categories": [
+        "cs.RO",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "A Simultaneous Approach for Training Neural Differential-Algebraic   Systems of Equations",
+      "authors": [
+        "Laurens R. Lueg",
+        "Victor Alves",
+        "Daniel Schicksnus",
+        "John R. Kitchin",
+        "Carl D. Laird",
+        "Lorenz T. Biegler"
+      ],
+      "abstract": "Scientific machine learning is an emerging field that broadly describes the combination of scientific computing and machine learning to address challenges in science and engineering. Within the context of differential equations, this has produced highly influential methods, such as neural ordinary differential equations (NODEs). Recent works extend this line of research to consider neural differential-algebraic systems of equations (DAEs), where some unknown relationships within the DAE are learned from data. Training neural DAEs, similarly to neural ODEs, is computationally expensive, as it requires the solution of a DAE for every parameter update. Further, the rigorous consideration of algebraic constraints is difficult within common deep learning training algorithms such as stochastic gradient descent. In this work, we apply the simultaneous approach to neural DAE problems, resulting in a fully discretized nonlinear optimization problem, which is solved to local optimality and simultaneously obtains the neural network parameters and the solution to the corresponding DAE. We extend recent work demonstrating the simultaneous approach for neural ODEs, by presenting a general framework to solve neural DAEs, with explicit consideration of hybrid models, where some components of the DAE are known, e.g. physics-informed constraints. Furthermore, we present a general strategy for improving the performance and convergence of the nonlinear programming solver, based on solving an auxiliary problem for initialization and approximating Hessian terms. We achieve promising results in terms of accuracy, model generalizability and computational cost, across different problem settings such as sparse data, unobserved states and multiple trajectories. Lastly, we provide several promising future directions to improve the scalability and robustness of our approach.",
+      "arxiv_id": "2504.04665",
+      "url": "https://arxiv.org/abs/2504.04665",
+      "pdf_url": "https://arxiv.org/pdf/2504.04665.pdf",
+      "published_date": "2025-04-07T01:26:55Z",
+      "categories": [
+        "cs.LG",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Receding Hamiltonian-Informed Optimal Neural Control and State   Estimation for Closed-Loop Dynamical Systems",
+      "authors": [
+        "Josue N. Rivera",
+        "Dengfeng Sun"
+      ],
+      "abstract": "This paper formalizes Hamiltonian-Informed Optimal Neural (Hion) controllers, a novel class of neural network-based controllers for dynamical systems and explicit non-linear model predictive control. Hion controllers estimate future states and compute optimal control inputs using Pontryagin's Maximum Principle. The proposed framework allows for customization of transient behavior, addressing limitations of existing methods. The Taylored Multi-Faceted Approach for Neural ODE and Optimal Control (T-mano) architecture facilitates training and ensures accurate state estimation. Optimal control strategies are demonstrated for both linear and non-linear dynamical systems.",
+      "arxiv_id": "2411.01297",
+      "url": "https://arxiv.org/abs/2411.01297",
+      "pdf_url": "https://arxiv.org/pdf/2411.01297.pdf",
+      "published_date": "2024-11-02T16:06:29Z",
+      "categories": [
+        "eess.SY",
+        "cs.AI",
+        "cs.ET",
+        "cs.LG",
+        "cs.RO",
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "On the Forward Invariance of Neural ODEs",
+      "authors": [
+        "Wei Xiao",
+        "Tsun-Hsuan Wang",
+        "Ramin Hasani",
+        "Mathias Lechner",
+        "Yutong Ban",
+        "Chuang Gan",
+        "Daniela Rus"
+      ],
+      "abstract": "We propose a new method to ensure neural ordinary differential equations (ODEs) satisfy output specifications by using invariance set propagation. Our approach uses a class of control barrier functions to transform output specifications into constraints on the parameters and inputs of the learning system. This setup allows us to achieve output specification guarantees simply by changing the constrained parameters/inputs both during training and inference. Moreover, we demonstrate that our invariance set propagation through data-controlled neural ODEs not only maintains generalization performance but also creates an additional degree of robustness by enabling causal manipulation of the system's parameters/inputs. We test our method on a series of representation learning tasks, including modeling physical dynamics and convexity portraits, as well as safe collision avoidance for autonomous vehicles.",
+      "arxiv_id": "2210.04763",
+      "url": "https://arxiv.org/abs/2210.04763",
+      "pdf_url": "https://arxiv.org/pdf/2210.04763.pdf",
+      "published_date": "2022-10-10T15:18:28Z",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO",
+        "cs.SY",
+        "eess.SY"
+      ]
+    },
+    {
+      "title": "Rademacher Complexity of Neural ODEs via Chen-Fliess Series",
+      "authors": [
+        "Joshua Hanson",
+        "Maxim Raginsky"
+      ],
+      "abstract": "We show how continuous-depth neural ODE models can be framed as single-layer, infinite-width nets using the Chen--Fliess series expansion for nonlinear ODEs. In this net, the output ``weights'' are taken from the signature of the control input -- a tool used to represent infinite-dimensional paths as a sequence of tensors -- which comprises iterated integrals of the control input over a simplex. The ``features'' are taken to be iterated Lie derivatives of the output function with respect to the vector fields in the controlled ODE model. The main result of this work applies this framework to derive compact expressions for the Rademacher complexity of ODE models that map an initial condition to a scalar output at some terminal time. The result leverages the straightforward analysis afforded by single-layer architectures. We conclude with some examples instantiating the bound for some specific systems and discuss potential follow-up work.",
+      "arxiv_id": "2401.16655",
+      "url": "https://arxiv.org/abs/2401.16655",
+      "pdf_url": "https://arxiv.org/pdf/2401.16655.pdf",
+      "published_date": "2024-01-30T01:18:41Z",
+      "categories": [
+        "stat.ML",
+        "cs.LG",
+        "cs.SY",
+        "eess.SY",
+        "math.OC"
+      ]
+    },
+    {
+      "title": "Lagrangian Reachtubes: The Next Generation",
+      "authors": [
+        "Sophie Gruenbacher",
+        "Jacek Cyranka",
+        "Mathias Lechner",
+        "Md. Ariful Islam",
+        "Scott A. Smolka",
+        "Radu Grosu"
+      ],
+      "abstract": "We introduce LRT-NG, a set of techniques and an associated toolset that computes a reachtube (an over-approximation of the set of reachable states over a given time horizon) of a nonlinear dynamical system. LRT-NG significantly advances the state-of-the-art Langrangian Reachability and its associated tool LRT. From a theoretical perspective, LRT-NG is superior to LRT in three ways. First, it uses for the first time an analytically computed metric for the propagated ball which is proven to minimize the ball's volume. We emphasize that the metric computation is the centerpiece of all bloating-based techniques. Secondly, it computes the next reachset as the intersection of two balls: one based on the Cartesian metric and the other on the new metric. While the two metrics were previously considered opposing approaches, their joint use considerably tightens the reachtubes. Thirdly, it avoids the \"wrapping effect\" associated with the validated integration of the center of the reachset, by optimally absorbing the interval approximation in the radius of the next ball. From a tool-development perspective, LRT-NG is superior to LRT in two ways. First, it is a standalone tool that no longer relies on CAPD. This required the implementation of the Lohner method and a Runge-Kutta time-propagation method. Secondly, it has an improved interface, allowing the input model and initial conditions to be provided as external input files. Our experiments on a comprehensive set of benchmarks, including two Neural ODEs, demonstrates LRT-NG's superior performance compared to LRT, CAPD, and Flow*.",
+      "arxiv_id": "2012.07458",
+      "url": "https://arxiv.org/abs/2012.07458",
+      "pdf_url": "https://arxiv.org/pdf/2012.07458.pdf",
+      "published_date": "2020-12-14T12:09:50Z",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "cs.NE",
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "Distributed neural network control with dependability guarantees: a   compositional port-Hamiltonian approach",
+      "authors": [
+        "Luca Furieri",
+        "Clara Lucía Galimberti",
+        "Muhammad Zakwan",
+        "Giancarlo Ferrari-Trecate"
+      ],
+      "abstract": "Large-scale cyber-physical systems require that control policies are distributed, that is, that they only rely on local real-time measurements and communication with neighboring agents. Optimal Distributed Control (ODC) problems are, however, highly intractable even in seemingly simple cases. Recent work has thus proposed training Neural Network (NN) distributed controllers. A main challenge of NN controllers is that they are not dependable during and after training, that is, the closed-loop system may be unstable, and the training may fail due to vanishing and exploding gradients. In this paper, we address these issues for networks of nonlinear port-Hamiltonian (pH) systems, whose modeling power ranges from energy systems to non-holonomic vehicles and chemical reactions. Specifically, we embrace the compositional properties of pH systems to characterize deep Hamiltonian control policies with built-in closed-loop stability guarantees, irrespective of the interconnection topology and the chosen NN parameters. Furthermore, our setup enables leveraging recent results on well-behaved neural ODEs to prevent the phenomenon of vanishing gradients by design. Numerical experiments corroborate the dependability of the proposed architecture, while matching the performance of general neural network policies.",
+      "arxiv_id": "2112.09046",
+      "url": "https://arxiv.org/abs/2112.09046",
+      "pdf_url": "https://arxiv.org/pdf/2112.09046.pdf",
+      "published_date": "2021-12-16T17:37:11Z",
+      "categories": [
+        "eess.SY",
+        "cs.LG",
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "Noise in the reverse process improves the approximation capabilities of   diffusion models",
+      "authors": [
+        "Karthik Elamvazhuthi",
+        "Samet Oymak",
+        "Fabio Pasqualetti"
+      ],
+      "abstract": "In Score based Generative Modeling (SGMs), the state-of-the-art in generative modeling, stochastic reverse processes are known to perform better than their deterministic counterparts. This paper delves into the heart of this phenomenon, comparing neural ordinary differential equations (ODEs) and neural stochastic differential equations (SDEs) as reverse processes. We use a control theoretic perspective by posing the approximation of the reverse process as a trajectory tracking problem. We analyze the ability of neural SDEs to approximate trajectories of the Fokker-Planck equation, revealing the advantages of stochasticity. First, neural SDEs exhibit a powerful regularizing effect, enabling $L^2$ norm trajectory approximation surpassing the Wasserstein metric approximation achieved by neural ODEs under similar conditions, even when the reference vector field or score function is not Lipschitz. Applying this result, we establish the class of distributions that can be sampled using score matching in SGMs, relaxing the Lipschitz requirement on the gradient of the data distribution in existing literature. Second, we show that this approximation property is preserved when network width is limited to the input dimension of the network. In this limited width case, the weights act as control inputs, framing our analysis as a controllability problem for neural SDEs in probability density space. This sheds light on how noise helps to steer the system towards the desired solution and illuminates the empirical success of stochasticity in generative modeling.",
+      "arxiv_id": "2312.07851",
+      "url": "https://arxiv.org/abs/2312.07851",
+      "pdf_url": "https://arxiv.org/pdf/2312.07851.pdf",
+      "published_date": "2023-12-13T02:39:10Z",
+      "categories": [
+        "cs.LG",
+        "cs.SY",
+        "eess.SY",
+        "math.OC"
+      ]
+    },
+    {
+      "title": "Lipschitz Bounded Equilibrium Networks",
+      "authors": [
+        "Max Revay",
+        "Ruigang Wang",
+        "Ian R. Manchester"
+      ],
+      "abstract": "This paper introduces new parameterizations of equilibrium neural networks, i.e. networks defined by implicit equations. This model class includes standard multilayer and residual networks as special cases. The new parameterization admits a Lipschitz bound during training via unconstrained optimization: no projections or barrier functions are required. Lipschitz bounds are a common proxy for robustness and appear in many generalization bounds. Furthermore, compared to previous works we show well-posedness (existence of solutions) under less restrictive conditions on the network weights and more natural assumptions on the activation functions: that they are monotone and slope restricted. These results are proved by establishing novel connections with convex optimization, operator splitting on non-Euclidean spaces, and contracting neural ODEs. In image classification experiments we show that the Lipschitz bounds are very accurate and improve robustness to adversarial attacks.",
+      "arxiv_id": "2010.01732",
+      "url": "https://arxiv.org/abs/2010.01732",
+      "pdf_url": "https://arxiv.org/pdf/2010.01732.pdf",
+      "published_date": "2020-10-05T01:00:40Z",
+      "categories": [
+        "cs.LG",
+        "cs.CV",
+        "cs.SY",
+        "eess.SY",
+        "math.OC",
+        "stat.ML"
+      ]
+    },
+    {
+      "title": "TwinLab: a framework for data-efficient training of non-intrusive   reduced-order models for digital twins",
+      "authors": [
+        "Maximilian Kannapinn",
+        "Michael Schäfer",
+        "Oliver Weeger"
+      ],
+      "abstract": "Purpose: Simulation-based digital twins represent an effort to provide high-accuracy real-time insights into operational physical processes. However, the computation time of many multi-physical simulation models is far from real-time. It might even exceed sensible time frames to produce sufficient data for training data-driven reduced-order models. This study presents TwinLab, a framework for data-efficient, yet accurate training of neural-ODE type reduced-order models with only two data sets. Design/methodology/approach: Correlations between test errors of reduced-order models and distinct features of corresponding training data are investigated. Having found the single best data sets for training, a second data set is sought with the help of similarity and error measures to enrich the training process effectively. Findings: Adding a suitable second training data set in the training process reduces the test error by up to 49% compared to the best base reduced-order model trained only with one data set. Such a second training data set should at least yield a good reduced-order model on its own and exhibit higher levels of dissimilarity to the base training data set regarding the respective excitation signal. Moreover, the base reduced-order model should have elevated test errors on the second data set. The relative error of the time series ranges from 0.18% to 0.49%. Prediction speed-ups of up to a factor of 36,000 are observed. Originality: The proposed computational framework facilitates the automated, data-efficient extraction of non-intrusive reduced-order models for digital twins from existing simulation models, independent of the simulation software.",
+      "arxiv_id": "2407.03924",
+      "url": "https://arxiv.org/abs/2407.03924",
+      "pdf_url": "https://arxiv.org/pdf/2407.03924.pdf",
+      "published_date": "2024-07-04T13:37:13Z",
+      "categories": [
+        "cs.CE",
+        "cs.AI",
+        "cs.SY",
+        "eess.SY",
+        "math.DS"
+      ]
+    },
+    {
+      "title": "Proofs for an Abstraction of Continuous Dynamical Systems Utilizing   Lyapunov Functions",
+      "authors": [
+        "Christoffer Sloth",
+        "Rafael Wisniewski"
+      ],
+      "abstract": "In this report proofs are presented for a method for abstracting continuous dynamical systems by timed automata. The method is based on partitioning the state space of dynamical systems with invariant sets, which form cells representing locations of the timed automata.   To enable verification of the dynamical system based on the abstraction, conditions for obtaining sound, complete, and refinable abstractions are set up.   It is proposed to partition the state space utilizing sub-level sets of Lyapunov functions, since they are positive invariant sets. The existence of sound abstractions for Morse-Smale systems and complete and refinable abstractions for linear systems are proved.",
+      "arxiv_id": "1008.3222",
+      "url": "https://arxiv.org/abs/1008.3222",
+      "pdf_url": "https://arxiv.org/pdf/1008.3222.pdf",
+      "published_date": "2010-08-19T06:14:47Z",
+      "categories": [
+        "cs.SY"
+      ]
+    },
+    {
+      "title": "A control-theoretical methodology for the scheduling problem",
+      "authors": [
+        "Carlo A. Furia",
+        "Alberto Leva",
+        "Martina Maggio",
+        "Paola Spoletini"
+      ],
+      "abstract": "This paper presents a novel methodology to develop scheduling algorithms. The scheduling problem is phrased as a control problem, and control-theoretical techniques are used to design a scheduling algorithm that meets specific requirements. Unlike most approaches to feedback scheduling, where a controller integrates a \"basic\" scheduling algorithm and dynamically tunes its parameters and hence its performances, our methodology essentially reduces the design of a scheduling algorithm to the synthesis of a controller that closes the feedback loop. This approach allows the re-use of control-theoretical techniques to design efficient scheduling algorithms; it frames and solves the scheduling problem in a general setting; and it can naturally tackle certain peculiar requirements such as robustness and dynamic performance tuning. A few experiments demonstrate the feasibility of the approach on a real-time benchmark.",
+      "arxiv_id": "1009.3455",
+      "url": "https://arxiv.org/abs/1009.3455",
+      "pdf_url": "https://arxiv.org/pdf/1009.3455.pdf",
+      "published_date": "2010-09-17T15:44:58Z",
+      "categories": [
+        "cs.SY"
+      ]
+    }
+  ],
+  "classifications": [
+    {
+      "paper_id": "2206.11120",
+      "primary_domain": "机器学习中的最优控制",
+      "sub_domains": [
+        "神经常微分方程（Neural ODE）",
+        "高维动力系统控制与超参数优化"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Neural ODE 控制器设计",
+        "截断与非截断反向传播 (BPTT) 性能分析",
+        "超参数（初始化、优化器、网络结构）敏感性研究",
+        "控制能量的隐式正则化"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "near-optimal control",
+        "dynamical systems",
+        "neural ordinary differential equations",
+        "backpropagation through time",
+        "hyperparameter optimization",
+        "control energy regularization"
+      ],
+      "application_areas": [
+        "机器人与自动化系统",
+        "复杂物理或工程过程的实时控制"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium/high"
+    },
+    {
+      "paper_id": "2006.09773",
+      "primary_domain": "机器学习 / 控制理论交叉",
+      "sub_domains": [
+        "深度学习",
+        "神经微分方程",
+        "复杂网络动力学控制"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Neural ODE",
+        "反馈控制策略学习",
+        "图动力学建模",
+        "低能量控制信号优化"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODE",
+        "反馈控制",
+        "图动力学系统",
+        "低能量控制",
+        "流行病模型",
+        "耦合振子"
+      ],
+      "application_areas": [
+        "网络化流行病防控",
+        "同步与振子网络控制",
+        "大规模复杂系统管理"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium-high"
+    },
+    {
+      "paper_id": "2205.09241",
+      "primary_domain": "控制理论与最优控制（数学视角）",
+      "sub_domains": [
+        "神经常微分方程 (Neural ODE)",
+        "连续体方程/偏微分方程可控性",
+        "深度学习理论",
+        "概率测度动力学"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "可控性分析（approximate controllability）",
+        "测度推送 (push-forward) 技术",
+        "分段常数控制权重设计",
+        "Lipschitz 向量场逼近理论"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODE",
+        "continuity equation",
+        "controllability",
+        "trajectory approximation",
+        "probability measure",
+        "piecewise constant control",
+        "Lipschitz vector field"
+      ],
+      "application_areas": [
+        "机器学习模型设计与训练（可解释/可控的动力系统网络）",
+        "机器人与自动化中的轨迹规划",
+        "群体/流体动力学建模",
+        "概率图模型与生成建模"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium-high"
+    },
+    {
+      "paper_id": "2104.05278",
+      "primary_domain": "控制理论与深度学习交叉研究",
+      "sub_domains": [
+        "Neural ODE理论",
+        "最优控制与泛函逼近"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "同时控制 (simultaneous control) NODE 系统",
+        "基于 Lipschitz 非线性激活的构造性控制策略"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODE",
+        "simultaneous control",
+        "universal approximation",
+        "classification",
+        "optimal transport",
+        "Lipschitz nonlinearity"
+      ],
+      "application_areas": [
+        "数据分类",
+        "深度网络可解释性/结构设计"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium-high"
+    },
+    {
+      "paper_id": "2408.03754",
+      "primary_domain": "软体机器人控制",
+      "sub_domains": [
+        "气动软体机器人",
+        "数据驱动控制/学习控制"
+      ],
+      "research_type": "experimental",
+      "technical_approaches": [
+        "Automatic Neural ODE Control (ANODEC)",
+        "无模型输入-输出数据驱动反馈控制"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Soft Robot",
+        "Neural ODE",
+        "Model-free Control",
+        "Agile Motion",
+        "Hysteresis",
+        "Data-driven Learning"
+      ],
+      "application_areas": [
+        "医疗微创操作与康复设备",
+        "柔性制造与自动化抓取"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2504.17139",
+      "primary_domain": "控制理论与控制工程",
+      "sub_domains": [
+        "安全关键控制",
+        "神经网络控制/学习控制"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Neural ODE",
+        "可微分二次规划(QP)层",
+        "控制势函数(CLF)",
+        "控制屏障函数(CBF)",
+        "伴随法求梯度"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Opt-ODENet",
+        "Neural ODE",
+        "Differentiable QP",
+        "Control Barrier Function",
+        "Control Lyapunov Function",
+        "Safe Control"
+      ],
+      "application_areas": [
+        "机器人与自动驾驶系统",
+        "航空航天/无人机安全控制"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2212.00866",
+      "primary_domain": "Control Systems & Signal Processing",
+      "sub_domains": [
+        "Nonlinear State Estimation",
+        "Machine Learning for Control"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Neural Ordinary Differential Equations (Neural ODEs)",
+        "Luenberger & Kazantzis-Kravaris-Luenberger (KKL) Observers",
+        "Robustness–convergence trade-off analysis",
+        "Gradient-based end-to-end training"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "state observer",
+        "neural ODE",
+        "Luenberger observer",
+        "KKL observer",
+        "nonlinear dynamics",
+        "robustness"
+      ],
+      "application_areas": [
+        "Robotics and Autonomous Systems",
+        "Industrial Process Control"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2311.12906",
+      "primary_domain": "机器学习与控制系统",
+      "sub_domains": [
+        "非线性系统辨识",
+        "群体机器人/无人机协同"
+      ],
+      "research_type": "experimental",
+      "technical_approaches": [
+        "循环神经网络 (RNN)",
+        "卷积神经网络 (CNN)",
+        "神经常微分方程 (Neural ODE)"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "非线性系统辨识",
+        "UAV蜂群",
+        "神经常微分方程",
+        "深度学习",
+        "轨迹预测"
+      ],
+      "application_areas": [
+        "群体机器人控制",
+        "自主无人机编队"
+      ],
+      "novelty_level": "medium",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2405.19013",
+      "primary_domain": "Machine Learning",
+      "sub_domains": [
+        "Deep Learning Theory",
+        "Optimal Control of Neural Networks"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Dissipativity theory",
+        "Optimal-control formulation of ResNets/Neural ODEs",
+        "Cross-entropy regularization in stage cost",
+        "Turnpike property analysis"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "dissipativity",
+        "cross-entropy loss",
+        "ResNet",
+        "neural ODE",
+        "turnpike phenomenon",
+        "optimal control"
+      ],
+      "application_areas": [
+        "Image classification (e.g., MNIST)",
+        "General deep-learning classification tasks"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium"
+    },
+    {
+      "paper_id": "2305.08849",
+      "primary_domain": "机器学习与控制理论交叉",
+      "sub_domains": [
+        "神经常微分方程（Neural ODE）",
+        "几何控制 / 流形学习"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "流形不变神经ODE结构设计",
+        "基于可控性的通用逼近定理证明（Agrachev–Caponigro框架）",
+        "有限宽度、深度可扩展网络分析",
+        "S2 与 SO(3) 数值实验验证"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "流形约束",
+        "神经ODE",
+        "通用逼近性质",
+        "几何可控性",
+        "SO(3)",
+        "S2"
+      ],
+      "application_areas": [
+        "机器人与航天器姿态控制",
+        "机械系统建模与模拟"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2210.11245",
+      "primary_domain": "优化与控制（Optimization & Control）",
+      "sub_domains": [
+        "非线性最优控制",
+        "Neural ODE 与神经控制策略"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Neural ordinary differential equations (Neural ODEs)",
+        "基于模型的有约束最优控制/反馈策略学习"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODEs",
+        "非线性最优控制",
+        "反馈策略",
+        "状态与控制约束",
+        "连续时间神经网络"
+      ],
+      "application_areas": [
+        "工业过程控制（如生物反应器）",
+        "自主系统与机器人"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium"
+    },
+    {
+      "paper_id": "2310.17584",
+      "primary_domain": "Optimization and Control (控制与优化)",
+      "sub_domains": [
+        "Robust Control",
+        "Adversarial Machine Learning"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Minimax Optimal Control Formulation",
+        "Pontryagin's Maximum Principle for Neural ODEs"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "adversarial training",
+        "robust control",
+        "neural ODE",
+        "minimax optimization",
+        "Pontryagin's Maximum Principle"
+      ],
+      "application_areas": [
+        "Robust Machine Learning Models",
+        "Autonomous & Safety-Critical Systems"
+      ],
+      "novelty_level": "medium",
+      "citation_potential": "medium"
+    },
+    {
+      "paper_id": "2110.12981",
+      "primary_domain": "电力系统动态建模与分析",
+      "sub_domains": [
+        "数据驱动电力系统建模",
+        "可再生能源并网动力学"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "神经常微分方程(Neural ODE)",
+        "神经微分代数方程(Neural DAE)",
+        "统一暂态稳定仿真",
+        "多模型耦合仿真框架"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODE",
+        "Neural DAE",
+        "数据驱动动态模型",
+        "暂态稳定仿真",
+        "可再生能源",
+        "电力系统组件建模"
+      ],
+      "application_areas": [
+        "电力系统暂态稳定评估",
+        "新能源场站/负荷等组件的黑箱建模"
+      ],
+      "novelty_level": "medium",
+      "citation_potential": "medium"
+    },
+    {
+      "paper_id": "2307.15546",
+      "primary_domain": "Formal Methods and Verification",
+      "sub_domains": [
+        "Neural network abstraction",
+        "Reachability analysis of dynamical systems"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Neural ODE modeling",
+        "Formal inductive synthesis",
+        "Piecewise-constant and sigmoidal activation templates",
+        "Hybrid automata interpretation",
+        "Safety reachability computation"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural abstraction",
+        "Neural ODE",
+        "Formal inductive synthesis",
+        "Piecewise affine dynamics",
+        "Safety verification",
+        "Reachability analysis",
+        "Hybrid automata"
+      ],
+      "application_areas": [
+        "Cyber-physical and control systems",
+        "Safety-critical autonomous systems"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium-high"
+    },
+    {
+      "paper_id": "2110.14296",
+      "primary_domain": "Machine Learning (cs.LG)",
+      "sub_domains": [
+        "System Identification & Modeling",
+        "Safe/Stable Control & Reinforcement Learning"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Neural Ordinary Differential Equations (Neural ODEs)",
+        "Neural Lyapunov Function Regularization",
+        "State–History Augmentation / Neural Delay Differential Equations",
+        "Classical Time-Delay Stability Analysis"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "stable dynamics modeling",
+        "partially observed systems",
+        "delayed dynamical systems",
+        "neural ODE",
+        "delay differential equation",
+        "Lyapunov stability",
+        "system identification",
+        "feedback control"
+      ],
+      "application_areas": [
+        "Safety-critical robotics & autonomous vehicles",
+        "Industrial process control and monitoring"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2304.02976",
+      "primary_domain": "Systems & Control / Machine Learning",
+      "sub_domains": [
+        "Neural Ordinary Differential Equations",
+        "Stability & Robust Control in Deep Learning"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Unconstrained parametrization of contracting and dissipative ODE-based networks",
+        "Lyapunov/contractivity analysis for continuous-time DNNs",
+        "Integration of Recurrent Equilibrium Networks with Neural ODEs"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "NodeREN",
+        "contractivity",
+        "dissipativity",
+        "Neural ODE",
+        "Recurrent Equilibrium Networks",
+        "continuous-time deep learning",
+        "nonlinear system identification"
+      ],
+      "application_areas": [
+        "robust learning-based control",
+        "nonlinear system identification",
+        "irregularly sampled time-series modeling"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium-high"
+    },
+    {
+      "paper_id": "2104.01390",
+      "primary_domain": "Robotics / Robot Learning",
+      "sub_domains": [
+        "Imitation Learning",
+        "Model-based Reinforcement Learning & Control"
+      ],
+      "research_type": "experimental",
+      "technical_approaches": [
+        "Neural Ordinary Differential Equations (Neural ODE)",
+        "Nonlinear Dynamics Inversion (NDI) Controller",
+        "Conditional Variational Auto-Encoder (cVAE) Trajectory Generator",
+        "Closed-loop Tracking Formulation"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "imitation learning",
+        "model-based control",
+        "Neural ODE",
+        "distribution shift",
+        "robust tracking",
+        "conditional VAE"
+      ],
+      "application_areas": [
+        "Autonomous Robotics (e.g., manipulation, locomotion)",
+        "Simulation-to-Real Transfer / Autonomous Driving"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2301.11683",
+      "primary_domain": "Formal Verification of Dynamical Systems",
+      "sub_domains": [
+        "Safety Verification",
+        "Neural ODE–based Abstraction"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Counterexample-Guided Inductive Synthesis (CEGIS)",
+        "Neural Network Abstractions with ReLU-based Neural ODEs"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "safety verification",
+        "nonlinear dynamical models",
+        "neural abstractions",
+        "neural ODE",
+        "hybrid automata",
+        "CEGIS"
+      ],
+      "application_areas": [
+        "Cyber-physical and control systems",
+        "Autonomous/robotic systems"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2109.14158",
+      "primary_domain": "机器学习（Machine Learning）",
+      "sub_domains": [
+        "深度学习优化",
+        "神经常微分方程（Neural ODE）"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "第二阶优化（Second-order optimization）",
+        "差分编程/最优控制视角（Differential Programming & Optimal Control）",
+        "低秩 Hessian 表示",
+        "Kronecker 因式分解预条件化"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODE",
+        "Second-Order Optimizer",
+        "Differential Programming",
+        "Optimal Control",
+        "Low-Rank Hessian",
+        "Kronecker Factorization",
+        "SNOpt"
+      ],
+      "application_areas": [
+        "图像分类",
+        "生成流模型",
+        "时间序列预测",
+        "网络结构搜索/自适应积分时间"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2411.02292",
+      "primary_domain": "Machine Learning / Dynamical Systems Modeling",
+      "sub_domains": [
+        "Neural Ordinary Differential Equations",
+        "Control Theory in Deep Learning"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "ControlSynth Neural ODE (CSODE) architecture",
+        "Lyapunov-based convergence analysis via linear matrix inequalities",
+        "Multi-scale control term for PDE-like dynamics",
+        "Comparative experiments with baseline neural networks"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODE",
+        "ControlSynth",
+        "Guaranteed convergence",
+        "Lyapunov stability",
+        "Dynamical systems"
+      ],
+      "application_areas": [
+        "Physics-informed modeling of complex systems",
+        "Robotics and autonomous control",
+        "Time-series prediction in engineering systems",
+        "Simulation of PDE-driven phenomena"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2411.19374",
+      "primary_domain": "Numerical Analysis",
+      "sub_domains": [
+        "Stiff Ordinary Differential Equations",
+        "Exponential Integrators"
+      ],
+      "research_type": "experimental",
+      "technical_approaches": [
+        "Single-step explicit exponential integration schemes",
+        "Matrix-exponential based time stepping",
+        "Benchmarking against implicit methods (Backward Euler, Integrating-factor Euler)",
+        "Accuracy / stability / scalability metrics on canonical stiff test problems"
+      ],
+      "relevance_score": 8.3,
+      "keywords_extracted": [
+        "stiff ODEs",
+        "explicit exponential integrator",
+        "matrix exponential",
+        "backward Euler",
+        "integrating factor Euler",
+        "performance evaluation"
+      ],
+      "application_areas": [
+        "Neural ODEs",
+        "Parameter estimation & Bayesian inference",
+        "Physics-informed neural networks",
+        "General stiff dynamical system simulation"
+      ],
+      "novelty_level": "medium",
+      "citation_potential": "medium"
+    },
+    {
+      "paper_id": "2503.04068",
+      "primary_domain": "Optimization and Control / Machine Learning Theory",
+      "sub_domains": [
+        "Neural Ordinary Differential Equations",
+        "Approximation & Controllability Theory"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "ODE-based flow controllability analysis",
+        "Gronwall-lemma driven error bounds with switching control construction"
+      ],
+      "relevance_score": 8.3,
+      "keywords_extracted": [
+        "narrow Neural ODE",
+        "flow approximation",
+        "controllability",
+        "switching weights",
+        "Gronwall inequality"
+      ],
+      "application_areas": [
+        "Model compression for resource-constrained inference",
+        "Control-oriented system identification"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium-high"
+    },
+    {
+      "paper_id": "2307.07882",
+      "primary_domain": "机器学习 / 人工智能",
+      "sub_domains": [
+        "神经常微分方程 (Neural ODE)",
+        "系统辨识与控制"
+      ],
+      "research_type": "experimental",
+      "technical_approaches": [
+        "Ensemble Kalman Inversion (EKI)",
+        "梯度-自由优化",
+        "贝叶斯逆问题建模",
+        "Tikhonov 正则化"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "ensemble Kalman inversion",
+        "gradient-free training",
+        "neural ODE",
+        "system identification",
+        "optimal control",
+        "Bayesian inverse problem"
+      ],
+      "application_areas": [
+        "机器人与自主系统控制",
+        "物理/工程动力学系统建模"
+      ],
+      "novelty_level": "medium",
+      "citation_potential": "medium"
+    },
+    {
+      "paper_id": "2012.08863",
+      "primary_domain": "Machine Learning / Formal Verification",
+      "sub_domains": [
+        "Neural Ordinary Differential Equations (Neural ODEs)",
+        "Reachability & Safety Verification"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Stochastic Lagrangian Reachability (SLR)",
+        "Forward-mode adjoint sensitivity gradients",
+        "Global-optimization based Reachtube construction"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODE",
+        "Stochastic reachability",
+        "Formal verification",
+        "Reachtube",
+        "Adjoint sensitivity",
+        "Global optimization"
+      ],
+      "application_areas": [
+        "Autonomous & safety-critical control systems",
+        "Robotics/Embedded cyber-physical systems"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2004.10883",
+      "primary_domain": "控制系统与机器学习交叉",
+      "sub_domains": [
+        "神经常微分方程 (Neural ODE)",
+        "系统稳定性与约束优化"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "神经常微分方程建模",
+        "特征值约束实现稳定性证明",
+        "Barrier 方法处理不等式约束",
+        "双线性动力学系统辨识"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Constrained Neural ODE",
+        "Stability Guarantees",
+        "Eigenvalue Constraints",
+        "Barrier Methods",
+        "Bilinear Dynamics",
+        "System Identification"
+      ],
+      "application_areas": [
+        "工业过程控制",
+        "安全关键系统建模与预测"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2505.19521",
+      "primary_domain": "机器人学与控制",
+      "sub_domains": [
+        "机器人学习",
+        "几何控制与动力学建模"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "纤维丛几何建模",
+        "测量感知控制屏障函数 (CBF)",
+        "Neural ODE 连续时间动力学学习",
+        "约束保持学习算法"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "fiber bundle",
+        "measurement-induced structure",
+        "control barrier function",
+        "neural ODE",
+        "constrained dynamics learning"
+      ],
+      "application_areas": [
+        "自主机器人操作与导航",
+        "受限物理系统建模与控制"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2504.04665",
+      "primary_domain": "Scientific Machine Learning / Neural Differential Equations",
+      "sub_domains": [
+        "Neural Differential-Algebraic Equations (Neural DAEs)",
+        "Physics-Informed & Hybrid Modeling"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Simultaneous (all-at-once) discretization and training",
+        "Nonlinear programming with auxiliary initialization & Hessian approximation"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "neural DAE",
+        "simultaneous approach",
+        "scientific machine learning",
+        "hybrid model",
+        "physics-informed constraint",
+        "nonlinear optimization"
+      ],
+      "application_areas": [
+        "Process and chemical systems engineering",
+        "Control & dynamical-system modeling"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2411.01297",
+      "primary_domain": "Systems & Control Engineering",
+      "sub_domains": [
+        "Optimal Control",
+        "Neural Model Predictive Control"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Hamiltonian-Informed Optimal Neural (Hion) control",
+        "Pontryagin’s Maximum Principle–based training loss",
+        "Receding-horizon (explicit NMPC)",
+        "Neural ODE state estimator (T-mano architecture)"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Hamiltonian-Informed Optimal Neural control",
+        "Pontryagin’s Maximum Principle",
+        "Neural ODE",
+        "Model Predictive Control",
+        "State Estimation",
+        "Receding Horizon",
+        "Dynamical Systems"
+      ],
+      "application_areas": [
+        "Robotics & Autonomous Systems",
+        "Aerospace Guidance and Control"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2210.04763",
+      "primary_domain": "Machine Learning",
+      "sub_domains": [
+        "Deep Learning/Neural ODEs",
+        "Safe & Robust Learning / Control Theory Integration"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Control Barrier Functions (CBFs)",
+        "Forward/Invariance Set Propagation",
+        "Constrained Parameter & Input Optimization",
+        "Data-controlled Neural ODE Framework"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Neural ODEs",
+        "Forward Invariance",
+        "Control Barrier Functions",
+        "Safety Guarantees",
+        "Robustness",
+        "Constrained Training",
+        "Representation Learning"
+      ],
+      "application_areas": [
+        "Autonomous Driving & Collision Avoidance",
+        "Physical Dynamics Modeling",
+        "Robotics Safety",
+        "Safe Representation Learning"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2401.16655",
+      "primary_domain": "Statistical Machine Learning Theory",
+      "sub_domains": [
+        "Statistical Learning Theory (Generalization Bounds)",
+        "Neural Ordinary Differential Equations & Control-Theoretic Deep Learning"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Chen–Fliess series / path-signature representation",
+        "Rademacher complexity analysis for infinite-width single-layer equivalence of Neural ODEs"
+      ],
+      "relevance_score": 8.6,
+      "keywords_extracted": [
+        "Neural ODE",
+        "Chen–Fliess series",
+        "Path signature",
+        "Rademacher complexity",
+        "Generalization bound",
+        "Infinite-width network",
+        "Lie derivatives"
+      ],
+      "application_areas": [
+        "Theoretical analysis of deep learning models involving ODEs",
+        "Design and verification of learning-based control systems & time-series models"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2012.07458",
+      "primary_domain": "Formal verification and reachability analysis of dynamical systems",
+      "sub_domains": [
+        "Lagrangian reachability / reachtube computation",
+        "Safety analysis of nonlinear and neural ODE systems"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Analytically-optimized metric minimization for bloating-based reachability",
+        "Intersection of Cartesian and intrinsic metrics to tighten over-approximations",
+        "Wrapping-effect mitigation via optimal interval absorption",
+        "Standalone implementation of validated integration (Lohner) and high-order Runge-Kutta"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Lagrangian Reachability",
+        "Reachtube",
+        "Nonlinear Dynamical System",
+        "Metric Optimization",
+        "Neural ODE Verification"
+      ],
+      "application_areas": [
+        "Safety verification of cyber-physical and control systems",
+        "Robustness analysis of machine-learning-enabled dynamical models"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2112.09046",
+      "primary_domain": "机器学习",
+      "sub_domains": [],
+      "research_type": "application",
+      "technical_approaches": [],
+      "relevance_score": 5.0,
+      "keywords_extracted": [
+        "neural network"
+      ],
+      "application_areas": [],
+      "novelty_level": "medium",
+      "citation_potential": "medium"
+    },
+    {
+      "paper_id": "2312.07851",
+      "primary_domain": "Machine Learning / Generative Modeling",
+      "sub_domains": [
+        "Score-based Diffusion Models",
+        "Stochastic Differential Equations & Control Theory"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Neural SDE vs. Neural ODE comparative analysis",
+        "Control-theoretic trajectory-tracking formulation (Fokker–Planck)"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "score-based generative modeling",
+        "diffusion models",
+        "neural SDE",
+        "neural ODE",
+        "Fokker–Planck equation",
+        "trajectory tracking",
+        "regularization",
+        "controllability"
+      ],
+      "application_areas": [
+        "Deep generative image/audio synthesis",
+        "Probabilistic modeling in scientific computing"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2010.01732",
+      "primary_domain": "机器学习",
+      "sub_domains": [
+        "神经网络架构设计",
+        "鲁棒性与泛化分析"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "隐式/平衡网络参数化",
+        "Lipschitz 上界估计",
+        "单调算子与凸优化",
+        "非欧氏空间算子拆分",
+        "收缩型神经 ODE"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Equilibrium Networks",
+        "Lipschitz Bound",
+        "Monotone Activation",
+        "Convex Optimization",
+        "Operator Splitting",
+        "Adversarial Robustness"
+      ],
+      "application_areas": [
+        "对抗鲁棒图像分类",
+        "安全关键控制/系统辨识"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "2407.03924",
+      "primary_domain": "计算机辅助工程与数字孪生 (Computational Engineering & Digital Twin)",
+      "sub_domains": [
+        "非侵入式降阶建模 (Non-intrusive Reduced-Order Modeling)",
+        "神经常微分方程 (Neural ODE) 与数据高效训练"
+      ],
+      "research_type": "application",
+      "technical_approaches": [
+        "Neural-ODE 型降阶模型",
+        "双数据集 (two-shot) 数据高效训练策略",
+        "激励信号相似度与误差度量驱动的数据集选择",
+        "仿真软件无关的自动化框架 TwinLab"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "digital twin",
+        "reduced-order model",
+        "neural ODE",
+        "data-efficient training",
+        "non-intrusive modeling",
+        "similarity measure"
+      ],
+      "application_areas": [
+        "实时多物理场仿真与监控",
+        "智能制造/工业过程优化"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    },
+    {
+      "paper_id": "1008.3222",
+      "primary_domain": "Control theory & Formal Verification of Cyber-Physical Systems",
+      "sub_domains": [
+        "Hybrid/Timed Automata Abstraction",
+        "Lyapunov-based Dynamical System Analysis"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "State-space partitioning via Lyapunov sub-level sets",
+        "Sound/complete/refinable abstraction proofs for timed automata",
+        "Application to Morse-Smale and linear systems"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "Lyapunov functions",
+        "Timed automata",
+        "State-space abstraction",
+        "Invariant sets",
+        "Morse-Smale systems"
+      ],
+      "application_areas": [
+        "Formal verification of safety-critical control software",
+        "Design of embedded and cyber-physical systems"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "medium"
+    },
+    {
+      "paper_id": "1009.3455",
+      "primary_domain": "Computer Science – Real-Time & Embedded Systems",
+      "sub_domains": [
+        "Feedback-based Scheduling",
+        "Control-theoretic Algorithm Design"
+      ],
+      "research_type": "theory",
+      "technical_approaches": [
+        "Formulating scheduling as a closed-loop control problem",
+        "Controller synthesis to replace conventional schedulers",
+        "Use of robustness-oriented control techniques",
+        "Experimental validation on real-time benchmarks"
+      ],
+      "relevance_score": 8.5,
+      "keywords_extracted": [
+        "control-theoretical scheduling",
+        "feedback scheduling",
+        "controller synthesis",
+        "real-time systems",
+        "robustness",
+        "dynamic performance tuning"
+      ],
+      "application_areas": [
+        "Real-time embedded operating systems",
+        "Cyber-physical and industrial automation systems"
+      ],
+      "novelty_level": "high",
+      "citation_potential": "high"
+    }
+  ],
   "requirement": {
-    "user_input": "小推力轨迹优化",
+    "user_input": "Neural ODEs在最优控制问题中的应用",
     "research_domains": [
-      "航天工程",
-      "控制理论"
+      "最优控制 (Optimal Control)",
+      "机器学习 (Machine Learning)",
+      "动态系统 (Dynamical Systems)"
     ],
     "specific_topics": [
-      "小推力轨迹优化",
-      "最优控制",
-      "轨道转移"
+      "基于神经常微分方程的动力学建模与控制 (Dynamics Modeling and Control based on Neural ODEs)",
+      "数据驱动的最优控制策略求解 (Data-driven Optimal Control Policy Solving)",
+      "神经元网络与庞特里亚金极大值原理的结合 (Combining Neural Networks with Pontryagin's Maximum Principle)",
+      "利用可微规划求解约束性最优控制 (Solving Constrained Optimal Control using Differentiable Programming)"
     ],
     "keywords": [
-      "low-thrust trajectory optimization",
-      "optimal control",
-      "orbital transfer",
-      "indirect methods",
-      "direct methods",
-      "Pontryagin's maximum principle"
+      "Neural ODE",
+      "Neural Ordinary Differential Equations",
+      "Optimal Control",
+      "神经常微分方程",
+      "最优控制",
+      "Pontryagin's Maximum Principle",
+      "Data-driven Control",
+      "System Identification"
     ],
     "time_preference": {
-      "start_year": 2020,
+      "start_year": 2019,
       "end_year": 2024,
       "priority": "recent"
     },
-    "paper_count_estimate": 50,
+    "paper_count_estimate": 80,
     "research_focus": [
-      "theory",
-      "application"
+      "application",
+      "theory"
     ],
     "search_queries": [
-      "all:\"low-thrust trajectory optimization\" AND all:\"optimal control\"",
-      "all:\"low-thrust\" AND all:\"trajectory optimization\" AND all:\"orbital transfer\"",
-      "all:\"indirect methods\" AND all:\"low-thrust\"",
-      "all:\"direct methods\" AND all:\"low-thrust trajectory\""
+      "all:\"neural ordinary differential equations optimal control\"",
+      "all:\"neural ode control\"",
+      "cat:cs.SY abs:\"neural ode\"",
+      "all:\"pontryagin maximum principle neural network\""
     ]
   },
   "summary": {
-    "total_papers": 0,
-    "domains_found": 0,
-    "avg_relevance_score": 0
+    "total_papers": 37,
+    "domains_found": 35,
+    "avg_relevance_score": 8.397297297297296
   }
 }

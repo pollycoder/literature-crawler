@@ -1,17 +1,14 @@
-import json
 import asyncio
 from typing import Dict, Any, List
 from ..core.models import ResearchRequirement, TaskType
-from ..llm.model_router import ModelRouter
-from ..prompts.manager import PromptManager
+from ..core.llm_service import LLMService
 from ..core.exceptions import APIException
 
 class RequirementAnalyzer:
     """用户需求分析器"""
     
-    def __init__(self, model_router: ModelRouter, prompt_manager: PromptManager):
-        self.model_router = model_router
-        self.prompt_manager = prompt_manager
+    def __init__(self, llm_service: LLMService):
+        self.llm_service = llm_service
     
     async def analyze_requirement(self, 
                                 user_input: str,
@@ -19,27 +16,20 @@ class RequirementAnalyzer:
         """分析用户研究需求"""
         try:
             # 准备提示词变量
-            variables = {
-                "user_input": user_input
-            }
-            
-            # 获取格式化的提示词
-            prompt = self.prompt_manager.get_prompt(
-                TaskType.REQUIREMENT_ANALYSIS,
-                variables,
-                model_name=model_preference
+            variables = self.llm_service.create_standard_variables(
+                user_input=user_input
             )
             
-            # 调用LLM分析
-            response = await self.model_router.generate(
-                prompt=prompt,
-                model_ref=model_preference,
+            # 调用LLM分析并解析JSON结果
+            analysis_result = await self.llm_service.call_with_json_response(
                 task_type=TaskType.REQUIREMENT_ANALYSIS,
+                variables=variables,
+                model_preference=model_preference,
                 temperature=0.3  # 较低温度保证结果稳定性
             )
             
-            # 解析JSON响应
-            analysis_result = self.parse_analysis_result(response)
+            # 后处理和验证
+            analysis_result = self._post_process_analysis_result(analysis_result)
             
             # 构建ResearchRequirement对象
             return ResearchRequirement(
@@ -57,49 +47,30 @@ class RequirementAnalyzer:
         except Exception as e:
             raise APIException(f"Failed to analyze requirement: {str(e)}")
     
-    def parse_analysis_result(self, response: str) -> Dict[str, Any]:
-        """解析LLM分析结果"""
-        try:
-            # 尝试提取JSON内容
-            response = response.strip()
-            
-            # 找到JSON部分
-            json_start = response.find('{')
-            json_end = response.rfind('}') + 1
-            
-            if json_start == -1 or json_end == 0:
-                raise ValueError("No JSON found in response")
-            
-            json_str = response[json_start:json_end]
-            result = json.loads(json_str)
-            
-            # 验证必需字段
-            required_fields = [
-                "research_domains", "specific_topics", "keywords", 
-                "search_queries", "research_focus"
-            ]
-            
-            for field in required_fields:
-                if field not in result:
-                    result[field] = []
-            
-            # 设置默认值
-            if "time_preference" not in result:
-                result["time_preference"] = {
-                    "start_year": 2020,
-                    "end_year": 2024,
-                    "priority": "recent"
-                }
-            
-            if "paper_count_estimate" not in result:
-                result["paper_count_estimate"] = 50
-            
-            return result
-            
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid JSON in response: {str(e)}")
-        except Exception as e:
-            raise ValueError(f"Failed to parse analysis result: {str(e)}")
+    def _post_process_analysis_result(self, result: Dict[str, Any]) -> Dict[str, Any]:
+        """后处理分析结果，设置默认值"""
+        # 验证必需字段
+        required_fields = [
+            "research_domains", "specific_topics", "keywords", 
+            "search_queries", "research_focus"
+        ]
+        
+        for field in required_fields:
+            if field not in result:
+                result[field] = []
+        
+        # 设置默认值
+        if "time_preference" not in result:
+            result["time_preference"] = {
+                "start_year": 2020,
+                "end_year": 2024,
+                "priority": "recent"
+            }
+        
+        if "paper_count_estimate" not in result:
+            result["paper_count_estimate"] = 50
+        
+        return result
     
     def validate_analysis_result(self, result: Dict[str, Any]) -> bool:
         """验证分析结果的完整性"""
@@ -146,26 +117,25 @@ class RequirementAnalyzer:
                                feedback: str,
                                model_preference: str = None) -> ResearchRequirement:
         """根据用户反馈细化需求"""
-        refine_prompt = f"""
-        原始需求分析结果：
-        研究领域：{original_requirement.research_domains}
-        具体主题：{original_requirement.specific_topics}
-        关键词：{original_requirement.keywords}
-        
-        用户反馈：{feedback}
-        
-        请根据用户反馈调整需求分析结果，以JSON格式返回更新后的分析。
-        """
-        
         try:
-            response = await self.model_router.generate(
-                prompt=refine_prompt,
-                model_ref=model_preference,
+            # 准备细化变量
+            variables = self.llm_service.create_standard_variables(
+                research_domains=original_requirement.research_domains,
+                specific_topics=original_requirement.specific_topics,
+                keywords=original_requirement.keywords,
+                user_feedback=feedback
+            )
+            
+            # 调用LLM细化需求
+            refined_result = await self.llm_service.call_with_json_response(
                 task_type=TaskType.REQUIREMENT_ANALYSIS,
+                variables=variables,
+                model_preference=model_preference,
                 temperature=0.3
             )
             
-            refined_result = self.parse_analysis_result(response)
+            # 后处理
+            refined_result = self._post_process_analysis_result(refined_result)
             
             return ResearchRequirement(
                 user_input=f"{original_requirement.user_input}\n\n用户反馈：{feedback}",
@@ -178,6 +148,6 @@ class RequirementAnalyzer:
                 search_queries=refined_result.get("search_queries", [])
             )
             
-        except Exception as e:
+        except Exception:
             # 如果细化失败，返回原始需求
             return original_requirement

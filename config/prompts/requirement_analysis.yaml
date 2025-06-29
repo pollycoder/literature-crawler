@@ -26,6 +26,17 @@ template: |
   3. 生成有效的ArXiv搜索关键词
   4. 估算合理的论文数量范围
   5. 判断用户更关注理论还是应用
+  
+  重要：search_queries 必须使用ArXiv API支持的简单语法：
+  - 优先使用 all:"关键词" 搜索所有字段（最有效）
+  - 可使用 ti:"关键词" 搜索标题
+  - 可使用 abs:"关键词" 搜索摘要  
+  - 可使用 cat:cs.LG 等搜索分类
+  - 避免过度复杂的组合查询
+  - 不要使用括号和复杂嵌套
+  - 不要使用日期过滤（submittedDate等）
+  - 优先生成能找到论文的宽泛查询
+  - 示例: ["all:\"deep learning\"", "cat:cs.LG", "all:\"neural network\""]
 
 variables:
   - user_input
@@ -66,5 +77,5 @@ examples:
         "time_preference": {"start_year": 2020, "end_year": 2024, "priority": "recent"},
         "paper_count_estimate": 60,
         "research_focus": ["application", "experimental"],
-        "search_queries": ["deep learning autonomous driving perception", "neural networks self-driving cars decision"]
+        "search_queries": ["all:\"deep learning\" AND all:\"autonomous driving\"", "all:\"neural networks\" AND all:\"self-driving cars\""]
       }

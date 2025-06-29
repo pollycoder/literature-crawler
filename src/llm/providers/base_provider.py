@@ -71,7 +71,34 @@ class BaseLLMProvider(ABC):
                     asyncio.run(_test())
                     return True
             return False
-        except Exception:
+        except Exception as e:
+            # 记录连接测试失败的错误
+            provider_name = self.config.provider_type
+            print(f"连接测试失败 {provider_name}: {str(e)}")
+            
+            # 如果有logger，也记录到日志
+            if hasattr(self, 'logger') and self.logger:
+                try:
+                    # 生成一个测试用的request_id和session_id
+                    import time
+                    import uuid
+                    request_id = f"{provider_name}_connection_test_{int(time.time() * 1000)}"
+                    session_id = str(uuid.uuid4())
+                    
+                    self.logger.log_error(
+                        request_id=request_id,
+                        provider=provider_name,
+                        model=self.config.models[0].name if self.config.models else "unknown",
+                        error_type=type(e).__name__,
+                        error_message=f"连接测试失败: {str(e)}",
+                        duration=0,
+                        session_id=session_id,
+                        exception=e
+                    )
+                except Exception:
+                    # 避免日志记录失败影响连接测试结果
+                    pass
+            
             return False
     
     async def generate_with_retry(self, prompt: str, model_name: str, **kwargs) -> str:

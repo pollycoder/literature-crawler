@@ -41,11 +41,26 @@ class ClaudeProvider(BaseLLMProvider):
             return response.content[0].text
             
         except anthropic.RateLimitError as e:
-            raise RateLimitException(f"Claude rate limit exceeded: {str(e)}", provider="claude")
+            status_code = getattr(e, 'status_code', None) or 429
+            raise RateLimitException(f"Claude rate limit exceeded: {str(e)}", status_code=status_code, provider="claude")
         except anthropic.AuthenticationError as e:
-            raise AuthenticationException(f"Claude authentication failed: {str(e)}", provider="claude")
+            status_code = getattr(e, 'status_code', None) or 401
+            raise AuthenticationException(f"Claude authentication failed: {str(e)}", status_code=status_code, provider="claude")
+        except anthropic.BadRequestError as e:
+            status_code = getattr(e, 'status_code', None) or 400
+            raise APIException(f"Claude API error: {str(e)}", status_code=status_code, provider="claude")
+        except anthropic.NotFoundError as e:
+            status_code = getattr(e, 'status_code', None) or 404
+            raise APIException(f"Claude API error: {str(e)}", status_code=status_code, provider="claude")
+        except anthropic.PermissionDeniedError as e:
+            status_code = getattr(e, 'status_code', None) or 403
+            raise APIException(f"Claude API error: {str(e)}", status_code=status_code, provider="claude")
+        except anthropic.InternalServerError as e:
+            status_code = getattr(e, 'status_code', None) or 500
+            raise APIException(f"Claude API error: {str(e)}", status_code=status_code, provider="claude")
         except Exception as e:
-            raise APIException(f"Claude API error: {str(e)}", provider="claude")
+            status_code = getattr(e, 'status_code', None) or 500
+            raise APIException(f"Claude API error: {str(e)}", status_code=status_code, provider="claude")
     
     async def generate_batch(self, prompts: List[str], model_name: str, **kwargs) -> List[str]:
         """批量生成文本"""

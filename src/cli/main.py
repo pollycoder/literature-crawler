@@ -8,15 +8,65 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 from rich.panel import Panel
 
-from ..llm.model_router import ModelRouter
-from ..prompts.manager import PromptManager
-from ..crawler.arxiv_crawler import ArxivCrawler
-from ..analyzer.requirement_analyzer import RequirementAnalyzer
-from ..analyzer.classifier import PaperClassifier
-from ..reviewer.generator import ReviewGenerator
+from ..core.service_factory import get_service_factory
 from ..core.models import SearchQuery, TaskType
 from ..utils.config_utils import setup_proxy_config
 from ..utils.llm_logger import get_llm_logger
+
+def _create_fallback_queries(user_input: str) -> list:
+    """创建后备搜索查询"""
+    # 中英文关键词映射
+    cn_en_mapping = {
+        "深度学习": "deep learning",
+        "机器学习": "machine learning", 
+        "计算机视觉": "computer vision",
+        "自然语言处理": "natural language processing",
+        "人工智能": "artificial intelligence",
+        "神经网络": "neural network",
+        "卷积神经网络": "convolutional neural network",
+        "循环神经网络": "recurrent neural network",
+        "强化学习": "reinforcement learning",
+        "监督学习": "supervised learning",
+        "无监督学习": "unsupervised learning",
+        "迁移学习": "transfer learning",
+        "图像识别": "image recognition",
+        "语音识别": "speech recognition",
+        "文本分类": "text classification",
+        "目标检测": "object detection",
+        "生成模型": "generative model",
+        "transformer": "transformer",
+        "bert": "BERT",
+        "gpt": "GPT"
+    }
+    
+    keywords = []
+    user_lower = user_input.lower()
+    
+    # 检查中文关键词
+    for cn, en in cn_en_mapping.items():
+        if cn in user_input:
+            keywords.append(en)
+    
+    # 检查英文关键词
+    for keyword in ["deep learning", "machine learning", "neural network", "AI", "computer vision", 
+                   "NLP", "CNN", "RNN", "transformer", "BERT", "GPT", "reinforcement learning"]:
+        if keyword.lower() in user_lower:
+            keywords.append(keyword)
+    
+    # 如果没有找到匹配的关键词，使用原始输入
+    if not keywords:
+        keywords = [user_input]
+    
+    # 生成ArXiv兼容的查询
+    queries = []
+    for keyword in keywords[:3]:  # 最多3个关键词
+        queries.append(f'all:"{keyword}"')
+    
+    # 添加组合查询
+    if len(keywords) >= 2:
+        queries.append(f'all:"{keywords[0]}" AND all:"{keywords[1]}"')
+    
+    return queries
 
 console = Console()
 
@@ -42,7 +92,7 @@ async def _search_papers(query: str, max_papers: int, model: str, output: str, c
         console.print(Panel(f"[bold blue]开始文献搜索：{query}[/bold blue]", expand=False))
         
         # 初始化组件
-        model_router, prompt_manager = await _initialize_components(config_path)
+        factory = get_service_factory(config_path)
         
         with Progress(
             SpinnerColumn(),
@@ -52,27 +102,58 @@ async def _search_papers(query: str, max_papers: int, model: str, output: str, c
             
             # 步骤1：分析用户需求
             task1 = progress.add_task("分析研究需求...", total=None)
-            analyzer = RequirementAnalyzer(model_router, prompt_manager)
-            requirement = await analyzer.analyze_requirement(query, model)
-            progress.update(task1, description="需求分析完成")
+            try:
+                analyzer = await factory.get_requirement_analyzer()
+                requirement = await analyzer.analyze_requirement(query, model)
+                search_queries = requirement.search_queries
+                progress.update(task1, description="需求分析完成")
+                
+                # 显示分析结果
+                _display_requirement_analysis(requirement)
+                
+            except Exception as e:
+                console.print(f"[yellow]需求分析失败: {str(e)}[/yellow]")
+                console.print(f"[yellow]使用后备查询策略...[/yellow]")
+                search_queries = _create_fallback_queries(query)
+                progress.update(task1, description="使用后备查询")
             
-            # 显示分析结果
-            _display_requirement_analysis(requirement)
+            # 验证查询是否有效
+            if not search_queries:
+                search_queries = _create_fallback_queries(query)
+                console.print(f"[yellow]使用默认查询策略[/yellow]")
             
             # 步骤2：爬取论文
             task2 = progress.add_task("爬取ArXiv论文...", total=None)
-            async with ArxivCrawler() as crawler:
-                # 使用分析得到的搜索查询
-                search_queries = requirement.search_queries[:3]  # 使用前3个查询
+            crawler = await factory.get_arxiv_crawler()
+            async with crawler:
+                # 使用获得的搜索查询
+                search_queries = search_queries[:3]  # 使用前3个查询
                 all_papers = []
                 
-                for search_query in search_queries:
+                console.print(f"[blue]使用搜索查询: {search_queries}[/blue]")
+                
+                for i, search_query in enumerate(search_queries):
+                    papers_per_query = max_papers // len(search_queries)
                     query_obj = SearchQuery(
                         query_string=search_query,
-                        max_results=max_papers // len(search_queries)
+                        max_results=papers_per_query
                     )
                     result = await crawler.fetch_papers(query_obj)
+                    console.print(f"[dim]查询 {i+1}: '{search_query}' -> {result.crawled_count} 篇论文[/dim]")
                     all_papers.extend(result.papers)
+                
+                # 如果所有查询都没有结果，使用后备查询
+                if not all_papers:
+                    console.print(f"[yellow]所有查询都没有结果，使用后备查询...[/yellow]")
+                    fallback_queries = _create_fallback_queries(query)
+                    for fallback_query in fallback_queries[:2]:  # 只用前2个后备查询
+                        query_obj = SearchQuery(
+                            query_string=fallback_query,
+                            max_results=max_papers // 2
+                        )
+                        result = await crawler.fetch_papers(query_obj)
+                        console.print(f"[dim]后备查询: '{fallback_query}' -> {result.crawled_count} 篇论文[/dim]")
+                        all_papers.extend(result.papers)
                 
                 # 去重
                 unique_papers = crawler.remove_duplicates(all_papers)
@@ -86,7 +167,7 @@ async def _search_papers(query: str, max_papers: int, model: str, output: str, c
             
             # 步骤3：分类论文
             task3 = progress.add_task("分类和分析论文...", total=None)
-            classifier = PaperClassifier(model_router, prompt_manager)
+            classifier = await factory.get_paper_classifier()
             classifications = await classifier.classify_papers(papers, model)
             progress.update(task3, description="论文分类完成")
         

@@ -3,16 +3,14 @@ from typing import List, Dict, Any, Optional
 from collections import defaultdict
 from datetime import datetime
 from ..core.models import Paper, PaperClassification, LiteratureReview, TaskType, ResearchRequirement
-from ..llm.model_router import ModelRouter
-from ..prompts.manager import PromptManager
+from ..core.llm_service import LLMService
 from ..core.exceptions import APIException
 
 class ReviewGenerator:
     """文献综述生成器"""
     
-    def __init__(self, model_router: ModelRouter, prompt_manager: PromptManager):
-        self.model_router = model_router
-        self.prompt_manager = prompt_manager
+    def __init__(self, llm_service: LLMService):
+        self.llm_service = llm_service
     
     async def generate_literature_review(self,
                                        papers: List[Paper],
@@ -94,18 +92,11 @@ class ReviewGenerator:
                                      model_preference: str = None) -> str:
         """生成综述内容"""
         try:
-            # 获取格式化的提示词
-            prompt = self.prompt_manager.get_prompt(
-                TaskType.REVIEW_GENERATION,
-                review_data,
-                model_name=model_preference
-            )
-            
             # 调用LLM生成综述
-            content = await self.model_router.generate(
-                prompt=prompt,
-                model_ref=model_preference,
+            content = await self.llm_service.call_with_template(
                 task_type=TaskType.REVIEW_GENERATION,
+                variables=review_data,
+                model_preference=model_preference,
                 temperature=0.4,  # 中等创造性
                 max_tokens=8000   # 支持长文本生成
             )
@@ -275,24 +266,19 @@ class ReviewGenerator:
         if not domain_papers:
             return f"在{domain}领域未找到相关论文。"
         
-        # 生成该领域的简要总结
-        summary_prompt = f"""
-        请对以下{domain}领域的论文进行总结：
-        
-        论文列表：
-        {chr(10).join([f"{i+1}. {paper.title}" for i, paper in enumerate(domain_papers[:10])])}
-        
-        请生成一个500字左右的领域总结，包括：
-        1. 该领域的主要研究重点
-        2. 代表性技术方法
-        3. 发展趋势
-        """
-        
         try:
-            summary = await self.model_router.generate(
-                prompt=summary_prompt,
-                model_ref=model_preference,
+            # 准备领域总结变量
+            variables = self.llm_service.create_standard_variables(
+                domain=domain,
+                paper_titles=[paper.title for paper in domain_papers[:10]],
+                paper_count=len(domain_papers)
+            )
+            
+            # 使用LLM服务生成总结
+            summary = await self.llm_service.call_with_template(
                 task_type=TaskType.REVIEW_GENERATION,
+                variables=variables,
+                model_preference=model_preference,
                 temperature=0.3,
                 max_tokens=1000
             )

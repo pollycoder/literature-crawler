@@ -32,3 +32,11 @@ class RateLimitException(APIException):
 class AuthenticationException(APIException):
     """认证异常"""
     pass
+
+class ValidationException(APIException):
+    """数据验证异常"""
+    pass
+
+class ConfigurationException(LiteratureCrawlerException):
+    """配置异常"""
+    pass

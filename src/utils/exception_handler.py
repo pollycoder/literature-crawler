@@ -140,6 +140,11 @@ class ExceptionClassifier:
                     "status_code": StatusCode.SERVER_ERROR
                 }
         
+        # 优先使用异常实例中的状态码，如果没有则使用映射中的默认值
+        status_code = mapping["status_code"]
+        if hasattr(exception, 'status_code') and exception.status_code:
+            status_code = exception.status_code
+        
         return ExceptionInfo(
             exception=exception,
             category=mapping["category"],
@@ -148,7 +153,7 @@ class ExceptionClassifier:
             suggested_action=mapping["action"],
             retry_delay=mapping.get("retry_delay", 0),
             max_retries=mapping.get("max_retries", 0),
-            status_code=mapping["status_code"]
+            status_code=status_code
         )
 
 
@@ -215,7 +220,8 @@ class ExceptionHandler:
                 error_message=str(exc_info.exception),
                 duration=context.get("duration", 0),
                 status_code=exc_info.status_code,
-                session_id=session_id
+                session_id=session_id,
+                exception=exc_info.exception
             )
     
     def _execute_action(self, exc_info: ExceptionInfo, context: Dict[str, Any]):

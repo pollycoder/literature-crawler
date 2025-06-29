@@ -1,18 +1,15 @@
-import json
 import asyncio
 from typing import List, Dict, Any, Optional
 from collections import defaultdict
 from ..core.models import Paper, PaperClassification, TaskType, ResearchType, NoveltyLevel
-from ..llm.model_router import ModelRouter
-from ..prompts.manager import PromptManager
+from ..core.llm_service import LLMService
 from ..core.exceptions import APIException
 
 class PaperClassifier:
     """论文分类器"""
     
-    def __init__(self, model_router: ModelRouter, prompt_manager: PromptManager):
-        self.model_router = model_router
-        self.prompt_manager = prompt_manager
+    def __init__(self, llm_service: LLMService):
+        self.llm_service = llm_service
         
         # 预定义研究领域映射
         self.domain_keywords = {
@@ -77,41 +74,39 @@ class PaperClassifier:
         """分类单篇论文"""
         try:
             # 准备提示词变量
-            variables = {
-                "title": paper.title,
-                "authors": ", ".join(paper.authors),
-                "abstract": paper.abstract,
-                "categories": ", ".join(paper.categories) if paper.categories else ""
-            }
-            
-            # 获取格式化的提示词
-            prompt = self.prompt_manager.get_prompt(
-                TaskType.PAPER_CLASSIFICATION,
-                variables,
-                model_name=model_preference
+            variables = self.llm_service.create_standard_variables(
+                title=paper.title,
+                authors=paper.authors,
+                abstract=paper.abstract,
+                categories=paper.categories
             )
             
-            # 调用LLM分类
-            response = await self.model_router.generate(
-                prompt=prompt,
-                model_ref=model_preference,
+            # 调用LLM分类并解析JSON结果
+            classification_data = await self.llm_service.call_with_json_response(
                 task_type=TaskType.PAPER_CLASSIFICATION,
+                variables=variables,
+                model_preference=model_preference,
                 temperature=0.2  # 低温度保证分类一致性
             )
-            
-            # 解析分类结果
-            classification_data = self.parse_classification_result(response)
             
             return PaperClassification(
                 paper_id=paper.arxiv_id,
                 primary_domain=classification_data.get("primary_domain", "未知领域"),
                 sub_domains=classification_data.get("sub_domains", []),
-                research_type=self._parse_research_type(classification_data.get("research_type", "application")),
+                research_type=self.llm_service.get_parser().parse_enum_value(
+                    classification_data.get("research_type", "application"), 
+                    ResearchType, 
+                    ResearchType.APPLICATION
+                ),
                 technical_approaches=classification_data.get("technical_approaches", []),
                 relevance_score=float(classification_data.get("relevance_score", 5.0)),
                 keywords_extracted=classification_data.get("keywords_extracted", []),
                 application_areas=classification_data.get("application_areas", []),
-                novelty_level=self._parse_novelty_level(classification_data.get("novelty_level", "medium")),
+                novelty_level=self.llm_service.get_parser().parse_enum_value(
+                    classification_data.get("novelty_level", "medium"),
+                    NoveltyLevel,
+                    NoveltyLevel.MEDIUM
+                ),
                 citation_potential=classification_data.get("citation_potential", "medium"),
                 confidence_score=0.8  # 基于LLM的置信度
             )
@@ -120,46 +115,6 @@ class PaperClassifier:
             # 创建后备分类
             return self._create_fallback_classification(paper)
     
-    def parse_classification_result(self, response: str) -> Dict[str, Any]:
-        """解析分类结果"""
-        try:
-            # 提取JSON内容
-            response = response.strip()
-            json_start = response.find('{')
-            json_end = response.rfind('}') + 1
-            
-            if json_start == -1 or json_end == 0:
-                raise ValueError("No JSON found in response")
-            
-            json_str = response[json_start:json_end]
-            result = json.loads(json_str)
-            
-            return result
-            
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid JSON in classification response: {str(e)}")
-    
-    def _parse_research_type(self, type_str: str) -> ResearchType:
-        """解析研究类型"""
-        type_str = type_str.lower()
-        if "theory" in type_str:
-            return ResearchType.THEORY
-        elif "survey" in type_str or "review" in type_str:
-            return ResearchType.SURVEY
-        elif "experiment" in type_str:
-            return ResearchType.EXPERIMENTAL
-        else:
-            return ResearchType.APPLICATION
-    
-    def _parse_novelty_level(self, level_str: str) -> NoveltyLevel:
-        """解析新颖度级别"""
-        level_str = level_str.lower()
-        if "high" in level_str:
-            return NoveltyLevel.HIGH
-        elif "low" in level_str:
-            return NoveltyLevel.LOW
-        else:
-            return NoveltyLevel.MEDIUM
     
     def _create_fallback_classification(self, paper: Paper) -> PaperClassification:
         """创建后备分类（当LLM分类失败时）"""

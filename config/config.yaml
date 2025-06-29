@@ -53,12 +53,27 @@ models:
       cost_per_1k_input: 0.06
       cost_per_1k_output: 0.24
       
-    - name: "o4-mini-2025-04-16"
+    - name: "o4-mini"
       display_name: "o4-mini (代理)"
       default_temperature: 1.0
       default_max_tokens: 1000
       cost_per_1k_input: 0.002
       cost_per_1k_output: 0.008
+
+    - name: "o3-mini"
+      display_name: "o3-mini (代理)"
+      default_temperature: 1.0
+      default_max_tokens: 1000
+      cost_per_1k_input: 0.002
+      cost_per_1k_output: 0.008
+
+    - name: "gpt-4o"
+      display_name: "gpt-4o (代理)"
+      default_temperature: 1.0
+      default_max_tokens: 1000
+      cost_per_1k_input: 0.002
+      cost_per_1k_output: 0.008
+      
   
   # Claude 代理支持的模型
   claude_proxy:
@@ -82,6 +97,13 @@ models:
       default_max_tokens: 4000
       cost_per_1k_input: 0.015
       cost_per_1k_output: 0.075
+
+    - name: "claude-3-5-haiku"
+      display_name: "Claude 3.5 Haiku (代理)"
+      default_temperature: 0.7
+      default_max_tokens: 4000
+      cost_per_1k_input: 0.002
+      cost_per_1k_output: 0.008
   
   # Gemini 代理支持的模型
   gemini_proxy:
@@ -95,7 +117,7 @@ models:
     - name: "gemini-2.5-flash"
       display_name: "Gemini 2.5 Flash (代理)"
       default_temperature: 0.7
-      default_max_tokens: 4000
+      default_max_tokens: 8000
       cost_per_1k_input: 0.0003
       cost_per_1k_output: 0.0012
   
@@ -118,27 +140,26 @@ models:
 # 任务偏好设置 (格式: provider_name/model_name) - 统一使用代理
 task_preferences:
   requirement_analysis: 
-    - "gemini_proxy/gemini-2.5-flash" # Gemini 2.5 Flash
-    - "openai_proxy/o3"              # 优先使用代理的o3
-    - "claude_proxy/claude-4-0-sonnet"  # Claude 4.0 Sonnet代理
-    - "deepseek_proxy/deepseek-chat" # DeepSeek便宜高效
-    - "gemini_proxy/gemini-2.5-pro"  # Gemini 2.5 Pro
-    - "openai_proxy/o4-mini"         # 备选便宜模型
-  
+    - "gemini_proxy/gemini-2.5-pro" # Gemini 2.5 pro
+    - "openai_proxy/o3" # o3
+    - "openai_proxy/gpt-4o" # gpt-4o
+    - "openai_proxy/o4-mini-2025-04-16" # o4-mini
+    - "deepseek_proxy/deepseek-chat" # DeepSeek Chat
+    
   paper_classification: 
+    - "openai_proxy/o3" # o3
+    - "gemini_proxy/gemini-2.5-pro" # Gemini 2.5 pro
     - "gemini_proxy/gemini-2.5-flash" # Gemini 2.5 Flash
-    - "openai_proxy/o4-mini"         # 分类任务用较便宜的模型
-    - "deepseek_proxy/deepseek-chat" # DeepSeek性价比高
-    - "claude_proxy/claude-3-7-sonnet"  # Claude 3.7 Sonnet
-    - "openai_proxy/o3"              # 高质量备选
+    - "openai_proxy/gpt-4o" # gpt-4o
+    - "openai_proxy/o4-mini-2025-04-16" # o4-mini
+    - "deepseek_proxy/deepseek-chat" # deepseek-chat
   
   review_generation: 
-    - "gemini_proxy/gemini-2.5-flash" # Gemini 2.5 Flash
-    - "openai_proxy/o3"              # 综述需要高质量模型
-    - "claude_proxy/claude-4-0-opus"   # Claude 4.0 Opus最高质量
-    - "claude_proxy/claude-4-0-sonnet" # Claude 4.0 Sonnet
-    - "gemini_proxy/gemini-2.5-pro"  # Gemini 2.5 Pro
-    - "deepseek_proxy/deepseek-chat" # DeepSeek备选
+    - "gemini_proxy/gemini-2.5-pro" # Gemini 2.5 pro
+    - "openai_proxy/o3" # o3
+    - "openai_proxy/gpt-4o" # gpt-4o
+    - "openai_proxy/o4-mini-2025-04-16" # o4-mini
+
 
 # 爬虫设置
 crawler:

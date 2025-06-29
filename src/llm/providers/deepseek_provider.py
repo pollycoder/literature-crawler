@@ -42,10 +42,11 @@ class DeepSeekProvider(BaseLLMProvider):
         async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=self.timeout)) as session:
             async with session.post(url, headers=headers, json=data) as response:
                 if response.status == 429:
-                    raise RateLimitException("Rate limit exceeded")
+                    raise RateLimitException("Rate limit exceeded", status_code=429, provider="deepseek")
                 elif response.status != 200:
                     error_text = await response.text()
-                    raise APIException(f"DeepSeek API error {response.status}: {error_text}")
+                    raise APIException(f"DeepSeek API error {response.status}: {error_text}", 
+                                     status_code=response.status, provider="deepseek")
                 
                 result = await response.json()
                 
@@ -55,7 +56,8 @@ class DeepSeekProvider(BaseLLMProvider):
                     if 'message' in choice and 'content' in choice['message']:
                         return choice['message']['content']
                 
-                raise APIException("Invalid response format from DeepSeek API")
+                raise APIException("Invalid response format from DeepSeek API", 
+                                 status_code=500, provider="deepseek")
     
     async def generate_batch(self, prompts: List[str], model_name: str, **kwargs) -> List[str]:
         """批量生成文本"""

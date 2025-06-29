@@ -25,6 +25,7 @@ class StatusCode:
     UNAUTHORIZED = 401         # 认证失败
     FORBIDDEN = 403           # 权限不足
     NOT_FOUND = 404           # 模型不存在
+    UNPROCESSABLE_ENTITY = 422 # 请求格式正确但语义错误
     RATE_LIMITED = 429        # 速率限制
     
     # 服务端错误
@@ -174,11 +175,12 @@ class LLMLogger:
                  error_message: str,
                  duration: float = None,
                  status_code: int = None,
-                 session_id: str = None):
+                 session_id: str = None,
+                 exception: Exception = None):
         """记录LLM错误"""
-        # 根据错误类型自动判断状态码
+        # 根据错误类型自动判断状态码，优先使用异常中的真实状态码
         if status_code is None:
-            status_code = self._map_error_to_status_code(error_type)
+            status_code = self._map_error_to_status_code(error_type, exception)
         
         # session_id是必须的，应该从request中传递过来
         if session_id is None:
@@ -260,6 +262,7 @@ class LLMLogger:
             StatusCode.UNAUTHORIZED: "Unauthorized",
             StatusCode.FORBIDDEN: "Forbidden",
             StatusCode.NOT_FOUND: "Not Found",
+            StatusCode.UNPROCESSABLE_ENTITY: "Unprocessable Entity",
             StatusCode.RATE_LIMITED: "Rate Limited",
             StatusCode.SERVER_ERROR: "Server Error",
             StatusCode.BAD_GATEWAY: "Bad Gateway",
@@ -272,8 +275,13 @@ class LLMLogger:
         }
         return status_messages.get(status_code, f"Unknown Status ({status_code})")
     
-    def _map_error_to_status_code(self, error_type: str) -> int:
-        """将错误类型映射到状态码"""
+    def _map_error_to_status_code(self, error_type: str, exception: Exception = None) -> int:
+        """将错误类型映射到状态码，优先使用异常中的真实状态码"""
+        # 首先尝试从异常实例中获取状态码
+        if exception and hasattr(exception, 'status_code') and exception.status_code:
+            return exception.status_code
+            
+        # 如果没有真实状态码，使用错误类型映射
         error_mapping = {
             "AuthenticationException": StatusCode.UNAUTHORIZED,
             "RateLimitException": StatusCode.RATE_LIMITED,
@@ -283,7 +291,16 @@ class LLMLogger:
             "ModelNotFoundException": StatusCode.NOT_FOUND,
             "InsufficientQuotaException": StatusCode.FORBIDDEN,
             "ServiceUnavailableException": StatusCode.SERVICE_UNAVAILABLE,
-            "BadGatewayException": StatusCode.BAD_GATEWAY
+            "BadGatewayException": StatusCode.BAD_GATEWAY,
+            "ValueError": StatusCode.BAD_REQUEST,
+            "ConnectionError": StatusCode.BAD_GATEWAY,
+            # 通用HTTP错误类型
+            "BadRequestError": StatusCode.BAD_REQUEST,
+            "NotFoundError": StatusCode.NOT_FOUND,
+            "PermissionDeniedError": StatusCode.FORBIDDEN,
+            "UnprocessableEntityError": StatusCode.UNPROCESSABLE_ENTITY,
+            "InternalServerError": StatusCode.SERVER_ERROR,
+            "APITimeoutError": StatusCode.TIMEOUT
         }
         return error_mapping.get(error_type, StatusCode.SERVER_ERROR)
     

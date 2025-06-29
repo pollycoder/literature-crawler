@@ -35,24 +35,51 @@ class OpenAIProvider(BaseLLMProvider):
             request_params = {
                 "model": model_name,
                 "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": kwargs.get("max_tokens", 4000),
                 "timeout": self.timeout
             }
             
+            # o1/o3/o4推理模型使用max_completion_tokens，其他模型使用max_tokens
+            if self._is_reasoning_model(model_name):
+                request_params["max_completion_tokens"] = kwargs.get("max_tokens", 4000)
+            else:
+                request_params["max_tokens"] = kwargs.get("max_tokens", 4000)
+            
             # o1/o3/o4推理模型不支持temperature参数
             if not self._is_reasoning_model(model_name):
-                request_params["temperature"] = kwargs.get("temperature", 0.7)
+                request_params["temperature"] = kwargs.get("temperature", 1.0)
             
             response = await self.client.chat.completions.create(**request_params)
             
             return response.choices[0].message.content
             
         except openai.RateLimitError as e:
-            raise RateLimitException(f"OpenAI rate limit exceeded: {str(e)}", provider="openai")
+            status_code = getattr(e, 'status_code', None) or 429
+            raise RateLimitException(f"OpenAI rate limit exceeded: {str(e)}", status_code=status_code, provider="openai")
         except openai.AuthenticationError as e:
-            raise AuthenticationException(f"OpenAI authentication failed: {str(e)}", provider="openai")
+            status_code = getattr(e, 'status_code', None) or 401
+            raise AuthenticationException(f"OpenAI authentication failed: {str(e)}", status_code=status_code, provider="openai")
+        except openai.BadRequestError as e:
+            status_code = getattr(e, 'status_code', None) or 400
+            raise APIException(f"OpenAI API error: {str(e)}", status_code=status_code, provider="openai")
+        except openai.NotFoundError as e:
+            status_code = getattr(e, 'status_code', None) or 404
+            raise APIException(f"OpenAI API error: {str(e)}", status_code=status_code, provider="openai")
+        except openai.PermissionDeniedError as e:
+            status_code = getattr(e, 'status_code', None) or 403
+            raise APIException(f"OpenAI API error: {str(e)}", status_code=status_code, provider="openai")
+        except openai.UnprocessableEntityError as e:
+            status_code = getattr(e, 'status_code', None) or 422
+            raise APIException(f"OpenAI API error: {str(e)}", status_code=status_code, provider="openai")
+        except openai.InternalServerError as e:
+            status_code = getattr(e, 'status_code', None) or 500
+            raise APIException(f"OpenAI API error: {str(e)}", status_code=status_code, provider="openai")
+        except openai.APITimeoutError as e:
+            status_code = getattr(e, 'status_code', None) or 504
+            raise APIException(f"OpenAI API error: {str(e)}", status_code=status_code, provider="openai")
         except Exception as e:
-            raise APIException(f"OpenAI API error: {str(e)}", provider="openai")
+            # 尝试从异常中提取状态码
+            status_code = getattr(e, 'status_code', None) or 500
+            raise APIException(f"OpenAI API error: {str(e)}", status_code=status_code, provider="openai")
     
     async def generate_batch(self, prompts: List[str], model_name: str, **kwargs) -> List[str]:
         """批量生成文本"""
